@@ -3,8 +3,8 @@ Replacement of current personal education number (PEN) registry
 
 The main function of the PEN Registry system is to process (School/PSI) requests for PENs, issue new PENs where no PEN currently exists for the student and provide PEN matches for those students who have been provided PENs previously. PEN data is used for BC provincial exams, graduation credentials, and research and reporting.  Once issued, the PEN follows the student through their BC education path from Early Learning, through K-12 and Post-Secondary enrollment. The PEN is used for multiple purposes including; the distribution of funding to schools, transition analysis between schools, districts and Post-Secondary instructions, as well as for provincial exams, scholarships and for student mark reporting.
 
-# Student API
-The student api is simple CRU microservice (api/README.md).
+# Services Card API
+The services card api is simple CRU microservice (api/README.md).
 
 ## Directory Structure
 
@@ -19,13 +19,13 @@ The student api is simple CRU microservice (api/README.md).
 
 ## Documentation
 
-* [Online Student API Spec](https://student1.docs.apiary.io/#)
+* [Services Card API Spec]()
 * [Openshift Readme](tools/README.md)
 * [PEN Registry Wiki](https://github.com/bcgov/EDUC-INFRA-COMMON/wiki)
 
 ## Getting Help or Reporting an Issue
 
-To report bugs/issues/features requests, please file an [issue](https://github.com/bcgov/EDUC-STUDENT-API/issues).
+To report bugs/issues/features requests, please file an [issue](https://github.com/bcgov/EDUC-SERVICES-CARD/issues).
 
 ## License
 
