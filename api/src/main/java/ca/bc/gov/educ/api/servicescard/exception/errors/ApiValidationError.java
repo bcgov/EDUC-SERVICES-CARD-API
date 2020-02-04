@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.student.exception.errors;
+package ca.bc.gov.educ.api.servicescard.exception.errors;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

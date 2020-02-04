@@ -1,6 +1,6 @@
-package ca.bc.gov.educ.api.student.exception;
+package ca.bc.gov.educ.api.servicescard.exception;
 
-import ca.bc.gov.educ.api.student.exception.errors.ApiError;
+import ca.bc.gov.educ.api.servicescard.exception.errors.ApiError;
 import lombok.Getter;
 
 public class InvalidPayloadException extends RuntimeException {

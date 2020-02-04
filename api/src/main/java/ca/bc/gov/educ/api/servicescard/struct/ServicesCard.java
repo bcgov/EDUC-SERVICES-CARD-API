@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.student.struct;
+package ca.bc.gov.educ.api.servicescard.struct;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student implements Serializable {
+public class ServicesCard implements Serializable {
   private static final long serialVersionUID = 1L;
 
   String studentID;

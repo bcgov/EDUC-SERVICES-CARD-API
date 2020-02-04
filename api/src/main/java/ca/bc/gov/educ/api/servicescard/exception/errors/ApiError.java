@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.student.exception.errors;
+package ca.bc.gov.educ.api.servicescard.exception.errors;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

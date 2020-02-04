@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ca.bc.gov.educ.api.student</groupId>
-    <artifactId>student-api</artifactId>
+    <groupId>ca.bc.gov.educ.api.servicescard</groupId>
+    <artifactId>servicescard-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>student-api</name>
-    <description>Student CRU API</description>
+    <name>servicescard-api</name>
+    <description>Services Card CRU API</description>
 
     <properties>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>

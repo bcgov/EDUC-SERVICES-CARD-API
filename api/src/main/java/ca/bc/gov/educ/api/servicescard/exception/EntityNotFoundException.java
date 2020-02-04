@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.student.exception;
+package ca.bc.gov.educ.api.servicescard.exception;
 
 import java.util.HashMap;
 import java.util.Map;

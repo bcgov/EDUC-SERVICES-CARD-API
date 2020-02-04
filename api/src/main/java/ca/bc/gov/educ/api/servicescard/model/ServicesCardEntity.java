@@ -19,7 +19,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "student")
 @Data
-public class StudentEntity {
+public class ServicesCardEntity {
   @Id
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator", parameters = {

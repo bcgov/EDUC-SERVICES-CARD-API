@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.student.mappers;
+package ca.bc.gov.educ.api.servicescard.mappers;
 
 import org.apache.commons.lang3.StringUtils;
 
