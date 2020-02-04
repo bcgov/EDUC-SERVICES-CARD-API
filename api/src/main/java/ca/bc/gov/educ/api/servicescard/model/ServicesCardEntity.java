@@ -41,7 +41,7 @@ public class ServicesCardEntity {
   @PastOrPresent
   Date birthDate;
   @Column(name = "gender")
-  String genderCode;
+  String gender;
   @Email(message = "Email must be valid email address")
   @Column(name = "email")
   String email;

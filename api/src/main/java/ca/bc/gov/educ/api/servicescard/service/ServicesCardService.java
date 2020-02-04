@@ -24,8 +24,8 @@ import lombok.val;
 
 @Service
 public class ServicesCardService {
-  private static final String STUDENT_ID_ATTRIBUTE = "studentID";
-  public static final String STUDENT_API = "STUDENT_API";
+  private static final String SERVICES_CARD_ID_ATTRIBUTE = "servicesCardInfoID";
+  public static final String SERVICES_CARD_API = "SERVICES_CARD_API";
 
   @Getter(AccessLevel.PRIVATE)
   private final ServicesCardRepository repository;
@@ -46,7 +46,7 @@ public class ServicesCardService {
     if (result.isPresent()) {
       return result.get();
     } else {
-      throw new EntityNotFoundException(ServicesCardEntity.class, STUDENT_ID_ATTRIBUTE, studentID.toString());
+      throw new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, studentID.toString());
     }
   }
 
@@ -60,10 +60,10 @@ public class ServicesCardService {
    */
   public ServicesCardEntity createServicesCard(ServicesCardEntity servicesCardEntity) {
 
-    if (servicesCardEntity.getStudentID() != null)
-      throw new InvalidParameterException(STUDENT_ID_ATTRIBUTE);
-    servicesCardEntity.setCreateUser(STUDENT_API);
-    servicesCardEntity.setUpdateUser(STUDENT_API);
+    if (servicesCardEntity.getServicesCardInfoID() != null)
+      throw new InvalidParameterException(SERVICES_CARD_ID_ATTRIBUTE);
+    servicesCardEntity.setCreateUser(SERVICES_CARD_API);
+    servicesCardEntity.setUpdateUser(SERVICES_CARD_API);
     servicesCardEntity.setUpdateDate(new Date());
     servicesCardEntity.setCreateDate(new Date());
 
@@ -79,20 +79,20 @@ public class ServicesCardService {
    */
   public ServicesCardEntity updateServicesCard(ServicesCardEntity student) {
 
-    Optional<ServicesCardEntity> curServicesCardEntity = repository.findById(student.getStudentID());
+    Optional<ServicesCardEntity> curServicesCardEntity = repository.findById(student.getServicesCardInfoID());
 
     if (curServicesCardEntity.isPresent()) {
       final ServicesCardEntity newServicesCardEntity = curServicesCardEntity.get();
       val createUser = newServicesCardEntity.getCreateUser();
       val createDate = newServicesCardEntity.getCreateDate();
       BeanUtils.copyProperties(student, newServicesCardEntity);
-      newServicesCardEntity.setUpdateUser(STUDENT_API);
+      newServicesCardEntity.setUpdateUser(SERVICES_CARD_API);
       newServicesCardEntity.setUpdateDate(new Date());
       newServicesCardEntity.setCreateUser(createUser);
       newServicesCardEntity.setCreateDate(createDate);
       return repository.save(newServicesCardEntity);
     } else {
-      throw new EntityNotFoundException(ServicesCardEntity.class, STUDENT_ID_ATTRIBUTE, student.getStudentID().toString());
+      throw new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, student.getServicesCardInfoID().toString());
     }
   }
 
