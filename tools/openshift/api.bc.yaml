@@ -2,22 +2,22 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: 'educ-student-api-template'
+  template: 'educ-services-card-api-template'
 metadata:
-  name: 'educ-student-api-template'
+  name: 'educ-services-card-api-template'
 objects:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     labels:
-      build: educ-student-api-pipeline
-    name: educ-student-api-pipeline
+      build: educ-services-card-api-pipeline
+    name: educ-services-card-api-pipeline
     namespace: c2mvws-tools
   spec:
     source:
       git:
         ref: master
-        uri: 'https://github.com/bcgov/EDUC-STUDENT-API'
+        uri: 'https://github.com/bcgov/EDUC-SERVICES-CARD-API'
       type: Git
     strategy:
       jenkinsPipelineStrategy:

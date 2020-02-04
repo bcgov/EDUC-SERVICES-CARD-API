@@ -1,7 +1,7 @@
 pipeline{
   agent {
     kubernetes {
-      label 'mavenPod-StudentApi'
+      label 'mavenPod-ServicesCardApi'
       cloud 'openshift'
       defaultContainer 'jnlp'
       serviceAccount 'jenkins'
@@ -40,12 +40,12 @@ pipeline{
             - name: SONARQUBE_HOSTNAME
               valueFrom:
                 secretKeyRef:
-                  name: 'student-api-secrets'
+                  name: 'services-card-api-secrets'
                   key: sonarqube-host
             - name: SONARQUBE_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: 'student-api-secrets'
+                  name: 'services-card-api-secrets'
                   key: sonarqube-token
             volumeMounts:
             - mountPath: '/home/jenkins/.m2'
@@ -64,12 +64,12 @@ pipeline{
     TEST = 'c2mvws-test'
     PROD = 'c2mvws-prod'
 
-    REPO_NAME = 'educ-student-api'
+    REPO_NAME = 'educ-services-card-api'
     OWNER = 'bcgov'
     JOB_NAME = 'master'
     TAG = 'dev'
     
-    APP_NAME = 'student-api'
+    APP_NAME = 'services-card-api'
     APP_DOMAIN = 'pathfinder.gov.bc.ca'
 
     SOURCE_REPO_RAW = 'https://github.com/${OWNER}/${REPO_NAME}/master'
@@ -103,14 +103,6 @@ pipeline{
         sh '/bin/bash -c "mvn -f ./api/pom.xml -Dmaven.test.skip=true package"'
       }
     }
-	  stage('Add client jar to m2 repo') {
-		  steps {	
-        script {
-          def addJar = $//bin/bash -c "mvn install:install-file -Dfile=./api/target/student-api-${VERSION}-client.jar -DgroupId=ca.bc.gov.educ.api.student -DartifactId=student-api-client -Dversion=${VERSION} -Dpackaging=jar"/$
-          sh addJar
-        }
-      }
-    }
     stage('Create Image Builder') {
       when {
         expression {
@@ -131,7 +123,7 @@ pipeline{
       steps {
         script {
           openshift.withCluster() {
-            openshift.selector("bc", "${REPO_NAME}-${JOB_NAME}").startBuild("--from-file=./api/target/student-api-${VERSION}.jar", "--wait")
+            openshift.selector("bc", "${REPO_NAME}-${JOB_NAME}").startBuild("--from-file=./api/target/services-card-api-${VERSION}.jar", "--wait")
           }
         }
       }
