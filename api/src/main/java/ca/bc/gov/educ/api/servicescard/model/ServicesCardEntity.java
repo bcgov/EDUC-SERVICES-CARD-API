@@ -27,7 +27,7 @@ public class ServicesCardEntity {
   @Column(name = "services_card_info_id", unique = true, updatable = false, columnDefinition = "BINARY(16)")
   UUID servicesCardInfoID;
   @NotNull(message = "did cannot be null")
-  @Column(name = "did")
+  @Column(name = "did", unique = true)
   String did;
   @Column(name = "user_display_name")
   String userDisplayName;
