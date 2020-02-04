@@ -10,8 +10,8 @@ objects:
   kind: BuildConfig
   metadata:
     labels:
-      build: educ-services-card-api-pipeline
-    name: educ-services-card-api-pipeline
+      build: services-card-api-pipeline
+    name: services-card-api-pipeline
     namespace: c2mvws-tools
   spec:
     source:
