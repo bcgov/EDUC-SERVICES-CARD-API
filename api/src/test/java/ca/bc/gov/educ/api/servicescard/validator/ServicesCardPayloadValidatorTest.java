@@ -21,8 +21,8 @@ public class ServicesCardPayloadValidatorTest {
 
   @Before
   public void before() {
-    studentService = new ServicesCardService(repository);
-    servicesCardPayloadValidator = new ServicesCardPayloadValidator(studentService);
+	servicesCardService = new ServicesCardService(repository);
+    servicesCardPayloadValidator = new ServicesCardPayloadValidator(servicesCardService);
   }
 
 //  @Test
