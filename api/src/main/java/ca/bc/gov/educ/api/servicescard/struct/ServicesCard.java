@@ -1,15 +1,17 @@
 package ca.bc.gov.educ.api.servicescard.struct;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @Builder
@@ -18,32 +20,38 @@ import java.util.Date;
 public class ServicesCard implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  String studentID;
-  @NotNull(message = "PEN Number can not be null.")
-  String pen;
-  @Size(max = 40)
-  @NotNull(message = "Legal First Name can not be null.")
-  String legalFirstName;
-  @Size(max = 60)
-  String legalMiddleNames;
-  @Size(max = 40)
-  @NotNull(message = "Legal Last Name can not be null.")
-  String legalLastName;
-  @NotNull(message = "Date of Birth can not be null.")
-  Date dob;
-  String sexCode;
-  @NotNull(message = "Gender Code can not be null.")
+  String servicesCardInfoID;
+  @Size(max = 255)
+  @NotNull(message = "did cannot be null")
+  String did;
+  @Size(max = 255)
+  String userDisplayName;
+  @Size(max = 255)
+  String givenName;
+  @Size(max = 255)
+  String givenNames;
+  @Size(max = 255)
+  String surname;
+  @PastOrPresent
+  Date birthDate;
+  @Size(max = 7)
   String genderCode;
-  @NotNull(message = "Data Source Code can not be null.")
-  String dataSourceCode;
-  @Size(max = 40)
-  String usualFirstName;
-  @Size(max = 60)
-  String usualMiddleNames;
-  @Size(max = 40)
-  String usualLastName;
-  @Size(max = 80)
-  @Email(message = "Email must be valid email address.")
+  @Size(max = 255)
+  @Email(message = "Email must be valid email address")
   String email;
-  Date deceasedDate;
+  @Size(max = 1000)
+  @NotNull(message = "Street address cannot be null")
+  String streetAddress;
+  @Size(max = 255)
+  @NotNull(message = "City cannot be null")
+  String city;
+  @Size(max = 255)
+  @NotNull(message = "Province cannot be null")
+  String province;
+  @Size(max = 255)
+  @NotNull(message = "Country cannot be null")
+  String country;
+  @Size(max = 7)
+  @NotNull(message = "Postal code cannot be null")
+  String postalCode;   
 }

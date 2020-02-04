@@ -17,45 +17,49 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 @Entity
-@Table(name = "student")
+@Table(name = "services_card_info")
 @Data
 public class ServicesCardEntity {
   @Id
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator", parameters = {
           @Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy")})
-  @Column(name = "student_id", unique = true, updatable = false, columnDefinition = "BINARY(16)")
-  UUID studentID;
-  @NotNull(message = "pen cannot be null")
-  @Column(name = "pen")
-  String pen;
-  @Column(name = "legal_first_name")
-  String legalFirstName;
-  @Column(name = "legal_middle_names")
-  String legalMiddleNames;
-  @Column(name = "legal_last_name")
-  String legalLastName;
-  @Column(name = "dob")
+  @Column(name = "services_card_info_id", unique = true, updatable = false, columnDefinition = "BINARY(16)")
+  UUID servicesCardInfoID;
+  @NotNull(message = "did cannot be null")
+  @Column(name = "did")
+  String did;
+  @Column(name = "user_display_name")
+  String userDisplayName;
+  @Column(name = "given_name")
+  String givenName;
+  @Column(name = "given_names")
+  String givenNames;
+  @Column(name = "surname")
+  String surname;
+  @Column(name = "birthdate")
   @PastOrPresent
-  Date dob;
-  @Column(name = "sex_code")
-  char sexCode;
-  @Column(name = "gender_code")
-  char genderCode;
-  @Column(name = "data_source_code")
-  String dataSourceCode;
-  @Column(name = "usual_first_name")
-  String usualFirstName;
-  @Column(name = "usual_middle_names")
-  String usualMiddleNames;
-  @Column(name = "usual_last_name")
-  String usualLastName;
+  Date birthDate;
+  @Column(name = "gender")
+  String genderCode;
   @Email(message = "Email must be valid email address")
   @Column(name = "email")
   String email;
-  @Column(name = "deceased_date")
-  @PastOrPresent
-  Date deceasedDate;
+  @NotNull(message = "Street address cannot be null")
+  @Column(name = "street_address")
+  String streetAddress;
+  @NotNull(message = "City cannot be null")
+  @Column(name = "city")
+  String city;
+  @NotNull(message = "Province cannot be null")
+  @Column(name = "province")
+  String province;  
+  @NotNull(message = "Country cannot be null")
+  @Column(name = "country")
+  String country; 
+  @NotNull(message = "Postal code cannot be null")
+  @Column(name = "postal_code")
+  String postalCode;   
   @Column(name = "create_user")
   String createUser;
   @Column(name = "create_date")
