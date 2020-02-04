@@ -1,5 +1,12 @@
 package ca.bc.gov.educ.api.servicescard.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,9 +14,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import ca.bc.gov.educ.api.servicescard.exception.EntityNotFoundException;
+import ca.bc.gov.educ.api.servicescard.exception.InvalidParameterException;
 import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
 
@@ -28,47 +35,44 @@ public class ServicesCardServiceTest {
 	}
 
 	@Test
-	public void testCreateStudent_WhenPayloadIsValid_ShouldReturnSavedObject() throws ParseException {
+	public void testCreateServicesCard_WhenPayloadIsValid_ShouldReturnSavedObject() throws ParseException {
 		ServicesCardEntity servicesCard = getServicesCardEntity();
 		assertNotNull(service.createServicesCard(servicesCard));
 		assertNotNull(servicesCard.getServicesCardInfoID());
 	}
 
-//
-//
-//  @Test
-//  public void testCreateStudent_WhenPayloadContainsStudentID_ShouldThrowInvalidParameterException() throws ParseException {
-//    StudentEntity student = getStudentEntity();
-//    student.setStudentID(UUID.fromString("00000000-8000-0000-000e-000000000000"));
-//    assertThrows(InvalidParameterException.class, () -> service.createStudent(student));
-//  }
-//
-//
-//  @Test
-//  public void testRetrieveStudent_WhenStudentExistInDB_ShouldReturnStudent() throws ParseException {
-//    StudentEntity student = getStudentEntity();
-//    assertNotNull(service.createStudent(student));
-//    assertNotNull(service.retrieveStudent(student.getStudentID()));
-//  }
-//
-//  @Test
-//  public void testRetrieveStudent_WhenStudentDoesNotExistInDB_ShouldThrowEntityNotFoundException() {
-//    assertThrows(EntityNotFoundException.class, () -> service.retrieveStudent(UUID.fromString("00000000-0000-0000-0000-f3b2d4f20000")));
-//  }
-//
-//  @Test
-//  public void testUpdateStudent_WhenPayloadIsValid_ShouldReturnTheUpdatedObject() throws ParseException {
-//
-//    StudentEntity student = getStudentEntity();
-//    student = service.createStudent(student);
-//    student.setLegalFirstName("updatedFirstName");
-//    StudentEntity updateEntity = service.updateStudent(student);
-//    assertNotNull(updateEntity);
-//    assertNotNull(updateEntity.getUpdateDate());
-//    assertThat(updateEntity.getLegalFirstName().equals("updatedFirstName")).isTrue();
-//  }
-//
-//
+	@Test
+	public void testCreateServicesCard_WhenPayloadContainsServicesCardID_ShouldThrowInvalidParameterException()
+			throws ParseException {
+		ServicesCardEntity servicesCard = getServicesCardEntity();
+		servicesCard.setServicesCardInfoID(UUID.fromString("00000000-8000-0000-000e-000000000000"));
+		assertThrows(InvalidParameterException.class, () -> service.createServicesCard(servicesCard));
+	}
+
+	@Test
+	public void testRetrieveServicesCard_WhenServicesCardExistInDB_ShouldReturnServicesCard() throws ParseException {
+		ServicesCardEntity servicesCard = getServicesCardEntity();
+		assertNotNull(service.createServicesCard(servicesCard));
+		assertNotNull(service.retrieveServicesCard(servicesCard.getServicesCardInfoID()));
+	}
+
+	@Test
+	public void testRetrieveServicesCard_WhenServicesCardDoesNotExistInDB_ShouldThrowEntityNotFoundException() {
+		assertThrows(EntityNotFoundException.class,
+				() -> service.retrieveServicesCard(UUID.fromString("00000000-0000-0000-0000-f3b2d4f20000")));
+	}
+
+	@Test
+	public void testUpdateServicesCard_WhenPayloadIsValid_ShouldReturnTheUpdatedObject() throws ParseException {
+		ServicesCardEntity servicesCard = getServicesCardEntity();
+		servicesCard = service.createServicesCard(servicesCard);
+		servicesCard.setGivenName("updatedFirstName");
+		ServicesCardEntity updateEntity = service.updateServicesCard(servicesCard);
+		assertNotNull(updateEntity);
+		assertNotNull(updateEntity.getUpdateDate());
+		assertThat(updateEntity.getGivenName().equals("updatedFirstName")).isTrue();
+	}
+
 	private ServicesCardEntity getServicesCardEntity() throws ParseException {
 		ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
 		servicesCardEntity.setBirthDate(formatter.parse("1979-06-11"));
