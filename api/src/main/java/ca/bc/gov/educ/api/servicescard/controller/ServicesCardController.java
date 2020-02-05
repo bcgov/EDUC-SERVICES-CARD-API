@@ -43,6 +43,11 @@ public class ServicesCardController implements ServicesCardEndpoint {
   public ServicesCard readServicesCard(String servicesCardID) {
     return mapper.toStructure(service.retrieveServicesCard(UUID.fromString(servicesCardID)));
   }
+  
+  @Override
+  public ServicesCard searchServicesCard(String did) {
+	return mapper.toStructure(service.searchServicesCard(did));
+  }
 
   @ResponseStatus(code = CREATED)
   public ServicesCard createServicesCard(ServicesCard servicesCard) {
@@ -58,4 +63,5 @@ public class ServicesCardController implements ServicesCardEndpoint {
     log.info("Health Check OK, returning OK");
     return "OK";
   }
+
 }

@@ -48,6 +48,24 @@ public class ServicesCardService {
       throw new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, studentID.toString());
     }
   }
+  
+  /**
+   * Search for DigitalIDEntity by identity value and identity type code (BCeID or BCSC)
+   *
+   * @param typeValue
+   * @param typeCode
+   * @return
+   * @throws EntityNotFoundException
+   */
+  public ServicesCardEntity searchServicesCard(String did) {
+    Optional<ServicesCardEntity> result = repository.findByDid(did.toUpperCase());
+
+    if (result.isPresent()) {
+      return result.get();
+    } else {
+      throw new EntityNotFoundException(ServicesCardEntity.class, "did", did);
+    }
+  }
 
 
   /**
