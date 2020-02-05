@@ -72,26 +72,26 @@ public class ServicesCardService {
   /**
    * Updates a ServicesCardEntity
    *
-   * @param student the payload which will update the DB record for the given student.
+   * @param serviceCard the payload which will update the DB record for the given student.
    * @return the updated entity.
    * @throws EntityNotFoundException if the entity does not exist in the DB.
    */
-  public ServicesCardEntity updateServicesCard(ServicesCardEntity student) {
+  public ServicesCardEntity updateServicesCard(ServicesCardEntity serviceCard) {
 
-    Optional<ServicesCardEntity> curServicesCardEntity = repository.findById(student.getServicesCardInfoID());
+    Optional<ServicesCardEntity> curServicesCardEntity = repository.findById(serviceCard.getServicesCardInfoID());
 
     if (curServicesCardEntity.isPresent()) {
       final ServicesCardEntity newServicesCardEntity = curServicesCardEntity.get();
       String createUser = newServicesCardEntity.getCreateUser();
       Date createDate = newServicesCardEntity.getCreateDate();
-      BeanUtils.copyProperties(student, newServicesCardEntity);
+      BeanUtils.copyProperties(serviceCard, newServicesCardEntity);
       newServicesCardEntity.setUpdateUser(SERVICES_CARD_API);
       newServicesCardEntity.setUpdateDate(new Date());
       newServicesCardEntity.setCreateUser(createUser);
       newServicesCardEntity.setCreateDate(createDate);
       return repository.save(newServicesCardEntity);
     } else {
-      throw new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, student.getServicesCardInfoID().toString());
+      throw new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, serviceCard.getServicesCardInfoID().toString());
     }
   }
 
