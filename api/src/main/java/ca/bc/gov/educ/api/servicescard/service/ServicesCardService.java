@@ -14,7 +14,6 @@ import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.val;
 
 /**
  * Services Card Service
@@ -83,8 +82,8 @@ public class ServicesCardService {
 
     if (curServicesCardEntity.isPresent()) {
       final ServicesCardEntity newServicesCardEntity = curServicesCardEntity.get();
-      val createUser = newServicesCardEntity.getCreateUser();
-      val createDate = newServicesCardEntity.getCreateDate();
+      String createUser = newServicesCardEntity.getCreateUser();
+      Date createDate = newServicesCardEntity.getCreateDate();
       BeanUtils.copyProperties(student, newServicesCardEntity);
       newServicesCardEntity.setUpdateUser(SERVICES_CARD_API);
       newServicesCardEntity.setUpdateDate(new Date());
