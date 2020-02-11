@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
@@ -56,4 +57,12 @@ public class ServicesCard implements Serializable {
   @Size(max = 7)
   @NotNull(message = "Postal code cannot be null")
   String postalCode;   
+  @Null(message = "createDate should be null.")
+  Date createDate;
+  @Null(message = "updateDate should be null.")
+  Date updateDate;
+  @Size(max = 32)
+  String createUser;
+  @Size(max = 32)
+  String updateUser;
 }
