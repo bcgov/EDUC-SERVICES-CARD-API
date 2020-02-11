@@ -81,6 +81,7 @@ public class ServicesCardServiceTest {
 		servicesCardEntity.setDid("1234123112321231");
 		servicesCardEntity.setEmail("this@sometest.com");
 		servicesCardEntity.setGender("Male");
+		servicesCardEntity.setIdentityAssuranceLevel("1");
 		servicesCardEntity.setGivenName("Mike");
 		servicesCardEntity.setGivenNames("John");
 		servicesCardEntity.setSurname("Delanis");

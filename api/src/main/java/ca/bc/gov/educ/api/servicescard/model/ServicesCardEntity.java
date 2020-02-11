@@ -42,6 +42,9 @@ public class ServicesCardEntity {
   Date birthDate;
   @Column(name = "gender")
   String gender;
+  @NotNull(message = "Identity assurance level cannot be null")
+  @Column(name = "identity_assurance_level")
+  String identityAssuranceLevel;
   @Email(message = "Email must be valid email address")
   @Column(name = "email")
   String email;

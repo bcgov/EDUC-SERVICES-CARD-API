@@ -36,6 +36,8 @@ public class ServicesCard implements Serializable {
   Date birthDate;
   @Size(max = 7)
   String genderCode;
+  @Size(max = 1)
+  String identityAssuranceLevel;
   @Size(max = 255)
   @Email(message = "Email must be valid email address")
   String email;
