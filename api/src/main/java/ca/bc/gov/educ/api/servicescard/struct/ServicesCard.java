@@ -35,7 +35,7 @@ public class ServicesCard implements Serializable {
   @PastOrPresent
   Date birthDate;
   @Size(max = 7)
-  String genderCode;
+  String gender;
   @Size(max = 1)
   String identityAssuranceLevel;
   @Size(max = 255)
