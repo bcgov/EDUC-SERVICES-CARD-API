@@ -26,6 +26,9 @@ public class ServicesCardEntity {
           @Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy")})
   @Column(name = "services_card_info_id", unique = true, updatable = false, columnDefinition = "BINARY(16)")
   UUID servicesCardInfoID;
+  @NotNull(message = "Digital ID cannot be null")
+  @Column(name = "digital_identity_id", columnDefinition = "BINARY(16)")
+  UUID digitalIdentityID;
   @NotNull(message = "did cannot be null")
   @Column(name = "did", unique = true)
   String did;

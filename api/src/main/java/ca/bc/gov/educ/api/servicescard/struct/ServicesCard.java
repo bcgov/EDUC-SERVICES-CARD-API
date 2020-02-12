@@ -22,6 +22,8 @@ public class ServicesCard implements Serializable {
   private static final long serialVersionUID = 1L;
 
   String servicesCardInfoID;
+  @NotNull(message = "Digital identity ID cannot be null")
+  String digitalIdentityID;
   @Size(max = 255)
   @NotNull(message = "did cannot be null")
   String did;

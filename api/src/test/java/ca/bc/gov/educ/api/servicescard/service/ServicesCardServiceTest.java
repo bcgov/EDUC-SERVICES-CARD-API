@@ -75,6 +75,7 @@ public class ServicesCardServiceTest {
 
 	private ServicesCardEntity getServicesCardEntity() throws ParseException {
 		ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
+		servicesCardEntity.setDigitalIdentityID(UUID.randomUUID());
 		servicesCardEntity.setBirthDate(formatter.parse("1979-06-11"));
 		servicesCardEntity.setCity("Compton");
 		servicesCardEntity.setCountry("Canada");
