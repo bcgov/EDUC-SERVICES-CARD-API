@@ -29,6 +29,10 @@ objects:
         containers:
         - image: docker-registry.default.svc:5000/${NAMESPACE}/${REPO_NAME}-${JOB_NAME}:${TAG}
           imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: tls-certs
+            mountPath: "/etc/tls-certs"
+            readOnly: true
           readinessProbe:
             tcpSocket:
               port: 8080
@@ -51,6 +55,10 @@ objects:
           - containerPort: ${{CONTAINER_PORT}}
             protocol: TCP
           resources: {}
+        volumes:
+        - name: tls-certs
+          secret:
+            secretName: services-card-api-cert
     test: false
     triggers:
     - type: ConfigChange
@@ -66,6 +74,8 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
+    annotations:
+      service.alpha.openshift.io/serving-cert-secret-name: "services-card-api-cert"
     labels:
       app: "${APP_NAME}-${JOB_NAME}"
     name: "${APP_NAME}-${JOB_NAME}"
