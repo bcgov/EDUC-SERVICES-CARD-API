@@ -22,6 +22,11 @@ objects:
       type: Rolling
     template:
       metadata:
+        annotations:
+          openshift.io/generated-by: servicescardapi
+          prometheus.io/path: /actuator/prometheus
+          prometheus.io/port: '8080'
+          prometheus.io/scrape: 'true'
         labels:
           app: "${APP_NAME}-${JOB_NAME}"
           deploymentConfig: "${APP_NAME}-${JOB_NAME}"
