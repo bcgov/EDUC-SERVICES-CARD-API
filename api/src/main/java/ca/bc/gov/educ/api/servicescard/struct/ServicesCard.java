@@ -1,18 +1,12 @@
 package ca.bc.gov.educ.api.servicescard.struct;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.*;
+import java.io.Serializable;
 
 @Data
 @Builder
@@ -35,8 +29,8 @@ public class ServicesCard implements Serializable {
   String givenNames;
   @Size(max = 255)
   String surname;
-  @PastOrPresent
-  Date birthDate;
+  @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Date of Birth must be in 'yyyy-mm-dd' format")
+  String birthDate;
   @Size(max = 7)
   String gender;
   @Size(max = 1)
@@ -58,11 +52,11 @@ public class ServicesCard implements Serializable {
   String country;
   @Size(max = 7)
   @NotNull(message = "Postal code cannot be null")
-  String postalCode;   
+  String postalCode;
   @Null(message = "createDate should be null.")
-  Date createDate;
+  String createDate;
   @Null(message = "updateDate should be null.")
-  Date updateDate;
+  String updateDate;
   @Size(max = 32)
   String createUser;
   @Size(max = 32)

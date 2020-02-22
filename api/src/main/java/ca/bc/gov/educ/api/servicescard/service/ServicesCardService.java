@@ -1,19 +1,18 @@
 package ca.bc.gov.educ.api.servicescard.service;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import ca.bc.gov.educ.api.servicescard.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.servicescard.exception.InvalidParameterException;
 import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Services Card Service
@@ -48,14 +47,12 @@ public class ServicesCardService {
       throw new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, studentID.toString());
     }
   }
-  
+
   /**
-   * Search for DigitalIDEntity by identity value and identity type code (BCeID or BCSC)
+   * Search for Services card by digital id
    *
-   * @param typeValue
-   * @param typeCode
-   * @return
-   * @throws EntityNotFoundException
+   * @param did the identifier to be used for searching.
+   * @return {@link ServicesCardEntity}
    */
   public ServicesCardEntity searchServicesCard(String did) {
     Optional<ServicesCardEntity> result = repository.findByDid(did.toUpperCase());
@@ -77,12 +74,10 @@ public class ServicesCardService {
    */
   public ServicesCardEntity createServicesCard(ServicesCardEntity servicesCardEntity) {
 
-    if (servicesCardEntity.getServicesCardInfoID() != null)
-      throw new InvalidParameterException(SERVICES_CARD_ID_ATTRIBUTE);
     servicesCardEntity.setCreateUser(SERVICES_CARD_API);
     servicesCardEntity.setUpdateUser(SERVICES_CARD_API);
-    servicesCardEntity.setUpdateDate(new Date());
-    servicesCardEntity.setCreateDate(new Date());
+    servicesCardEntity.setUpdateDate(LocalDateTime.now());
+    servicesCardEntity.setCreateDate(LocalDateTime.now());
 
     return repository.save(servicesCardEntity);
   }
@@ -101,10 +96,10 @@ public class ServicesCardService {
     if (curServicesCardEntity.isPresent()) {
       final ServicesCardEntity newServicesCardEntity = curServicesCardEntity.get();
       String createUser = newServicesCardEntity.getCreateUser();
-      Date createDate = newServicesCardEntity.getCreateDate();
+      LocalDateTime createDate = newServicesCardEntity.getCreateDate();
       BeanUtils.copyProperties(serviceCard, newServicesCardEntity);
       newServicesCardEntity.setUpdateUser(SERVICES_CARD_API);
-      newServicesCardEntity.setUpdateDate(new Date());
+      newServicesCardEntity.setUpdateDate(LocalDateTime.now());
       newServicesCardEntity.setCreateUser(createUser);
       newServicesCardEntity.setCreateDate(createDate);
       return repository.save(newServicesCardEntity);

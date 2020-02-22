@@ -1,8 +1,6 @@
 package ca.bc.gov.educ.api.servicescard.exception;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
+import ca.bc.gov.educ.api.servicescard.exception.errors.ApiError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +13,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import ca.bc.gov.educ.api.servicescard.exception.errors.ApiError;
+import java.time.format.DateTimeParseException;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -100,6 +101,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleInvalidPayload(
           InvalidPayloadException ex) {
     return buildResponseEntity(ex.getError());
+  }
+
+  /**
+   * Handles handleDateTimeParseException
+   *
+   * @param ex the DateTimeParseException
+   * @return the ApiError object
+   */
+  @ExceptionHandler(DateTimeParseException.class)
+  protected ResponseEntity<Object> handleDateTimeParseException(DateTimeParseException ex) {
+    ApiError apiError = new ApiError(BAD_REQUEST);
+    apiError.setMessage(ex.getMessage().concat(" , Expected pattern is 'yyyy-mm-ddTHH:MM:SS' for date time field or 'yyyy-mm-dd' for date field."));
+    return buildResponseEntity(apiError);
   }
 
 }

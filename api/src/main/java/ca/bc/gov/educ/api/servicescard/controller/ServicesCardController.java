@@ -1,21 +1,27 @@
 package ca.bc.gov.educ.api.servicescard.controller;
 
-import static org.springframework.http.HttpStatus.CREATED;
-
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import ca.bc.gov.educ.api.servicescard.endpoint.ServicesCardEndpoint;
+import ca.bc.gov.educ.api.servicescard.exception.InvalidParameterException;
+import ca.bc.gov.educ.api.servicescard.exception.InvalidPayloadException;
+import ca.bc.gov.educ.api.servicescard.exception.errors.ApiError;
 import ca.bc.gov.educ.api.servicescard.mappers.ServicesCardMapper;
 import ca.bc.gov.educ.api.servicescard.service.ServicesCardService;
 import ca.bc.gov.educ.api.servicescard.struct.ServicesCard;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 
 /**
@@ -32,8 +38,7 @@ public class ServicesCardController implements ServicesCardEndpoint {
   @Getter(AccessLevel.PRIVATE)
   private final ServicesCardService service;
 
-  @Getter(AccessLevel.PRIVATE)
-  private final ServicesCardMapper mapper = ServicesCardMapper.mapper;
+  private static final ServicesCardMapper mapper = ServicesCardMapper.mapper;
 
   @Autowired
   ServicesCardController(final ServicesCardService servicesCardService) {
@@ -43,14 +48,22 @@ public class ServicesCardController implements ServicesCardEndpoint {
   public ServicesCard readServicesCard(String servicesCardID) {
     return mapper.toStructure(service.retrieveServicesCard(UUID.fromString(servicesCardID)));
   }
-  
+
   @Override
   public ServicesCard searchServicesCard(String did) {
-	return mapper.toStructure(service.searchServicesCard(did));
+    return mapper.toStructure(service.searchServicesCard(did));
   }
 
-  @ResponseStatus(code = CREATED)
   public ServicesCard createServicesCard(ServicesCard servicesCard) {
+    if (servicesCard.getServicesCardInfoID() != null)
+      throw new InvalidParameterException("servicesCardInfoID");
+    if (LocalDate.parse(servicesCard.getBirthDate()).isAfter(LocalDate.now())) {
+      ApiError error = ApiError.builder().timestamp(LocalDateTime.now()).message("Payload contains invalid data.").status(BAD_REQUEST).build();
+      List<FieldError> errors = new ArrayList<>();
+      errors.add(new FieldError("servicesCard", "birthDate", servicesCard.getBirthDate(), false, null, null, "Birth date should be in past."));
+      error.addValidationErrors(errors);
+      throw new InvalidPayloadException(error);
+    }
     return mapper.toStructure(service.createServicesCard(mapper.toModel(servicesCard)));
   }
 
@@ -60,7 +73,7 @@ public class ServicesCardController implements ServicesCardEndpoint {
 
   @Override
   public String health() {
-    log.info("Health Check OK, returning OK");
+    log.trace("Health Check OK, returning OK");
     return "OK";
   }
 

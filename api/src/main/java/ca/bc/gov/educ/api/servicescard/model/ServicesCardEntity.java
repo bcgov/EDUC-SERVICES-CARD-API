@@ -1,20 +1,16 @@
 package ca.bc.gov.educ.api.servicescard.model;
 
-import java.util.Date;
-import java.util.UUID;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "services_card_info")
@@ -42,7 +38,7 @@ public class ServicesCardEntity {
   String surname;
   @Column(name = "birthdate")
   @PastOrPresent
-  Date birthDate;
+  LocalDate birthDate;
   @Column(name = "gender")
   String gender;
   @NotNull(message = "Identity assurance level cannot be null")
@@ -70,11 +66,11 @@ public class ServicesCardEntity {
   String createUser;
   @Column(name = "create_date")
   @PastOrPresent
-  Date createDate;
+  LocalDateTime createDate;
   @Column(name = "update_user")
   String updateUser;
   @Column(name = "update_date")
   @PastOrPresent
-  Date updateDate;
+  LocalDateTime updateDate;
 
 }

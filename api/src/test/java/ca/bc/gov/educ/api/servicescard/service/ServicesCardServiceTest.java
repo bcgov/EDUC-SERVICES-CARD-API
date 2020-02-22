@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -27,7 +28,6 @@ public class ServicesCardServiceTest {
 	@Autowired
 	ServicesCardRepository repository;
 	ServicesCardService service;
-	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 
 	@Before
 	public void before() {
@@ -41,13 +41,6 @@ public class ServicesCardServiceTest {
 		assertNotNull(servicesCard.getServicesCardInfoID());
 	}
 
-	@Test
-	public void testCreateServicesCard_WhenPayloadContainsServicesCardID_ShouldThrowInvalidParameterException()
-			throws ParseException {
-		ServicesCardEntity servicesCard = getServicesCardEntity();
-		servicesCard.setServicesCardInfoID(UUID.fromString("00000000-8000-0000-000e-000000000000"));
-		assertThrows(InvalidParameterException.class, () -> service.createServicesCard(servicesCard));
-	}
 
 	@Test
 	public void testRetrieveServicesCard_WhenServicesCardExistInDB_ShouldReturnServicesCard() throws ParseException {
@@ -76,7 +69,7 @@ public class ServicesCardServiceTest {
 	private ServicesCardEntity getServicesCardEntity() throws ParseException {
 		ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
 		servicesCardEntity.setDigitalIdentityID(UUID.randomUUID());
-		servicesCardEntity.setBirthDate(formatter.parse("1979-06-11"));
+		servicesCardEntity.setBirthDate(LocalDate.parse("1979-06-11"));
 		servicesCardEntity.setCity("Compton");
 		servicesCardEntity.setCountry("Canada");
 		servicesCardEntity.setDid("1234123112321231");
