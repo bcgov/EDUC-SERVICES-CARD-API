@@ -62,9 +62,9 @@ public class ServicesCardEntity {
   @NotNull(message = "Postal code cannot be null")
   @Column(name = "postal_code")
   String postalCode;   
-  @Column(name = "create_user")
+  @Column(name = "create_user", updatable = false)
   String createUser;
-  @Column(name = "create_date")
+  @Column(name = "create_date", updatable = false)
   @PastOrPresent
   LocalDateTime createDate;
   @Column(name = "update_user")
