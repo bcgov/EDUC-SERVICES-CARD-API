@@ -1,0 +1,13 @@
+target/
+.settings/
+.classpath
+.project
+.factorypath
+bin/
+.idea
+*.iml
+.project
+.classpath
+application-local.properties
+application-devlocal.properties
+ojdbc8.jar
