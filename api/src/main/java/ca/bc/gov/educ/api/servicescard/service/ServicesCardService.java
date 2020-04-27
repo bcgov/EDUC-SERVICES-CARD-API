@@ -9,6 +9,8 @@ import lombok.Getter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -106,6 +108,16 @@ public class ServicesCardService {
     } else {
       throw new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, serviceCard.getServicesCardInfoID().toString());
     }
+  }
+
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteAll() {
+    getRepository().deleteAll();
+  }
+
+  @Transactional(propagation = Propagation.MANDATORY)
+  public void deleteById(UUID id) {
+    getRepository().deleteById(id);
   }
 
 }

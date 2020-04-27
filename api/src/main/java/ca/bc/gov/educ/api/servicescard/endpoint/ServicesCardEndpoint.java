@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.servicescard.endpoint;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -41,4 +44,14 @@ public interface ServicesCardEndpoint {
   @GetMapping("/health")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
   String health();
+
+  @DeleteMapping
+  @PreAuthorize("#oauth2.hasScope('DELETE_SERVICES_CARD')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "NO CONTENT"), @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")})
+  ResponseEntity<Void> deleteAll();
+
+  @DeleteMapping("/{id}")
+  @PreAuthorize("#oauth2.hasScope('DELETE_SERVICES_CARD')")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "NO CONTENT"),  @ApiResponse(responseCode = "404", description = "NOT FOUND."), @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")})
+  ResponseEntity<Void> deleteById(@PathVariable UUID id);
 }
