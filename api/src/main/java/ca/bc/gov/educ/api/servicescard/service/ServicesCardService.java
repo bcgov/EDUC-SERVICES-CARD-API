@@ -6,6 +6,7 @@ import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -117,7 +118,9 @@ public class ServicesCardService {
 
   @Transactional(propagation = Propagation.MANDATORY)
   public void deleteById(UUID id) {
-    getRepository().deleteById(id);
+    val entityOptional = getRepository().findById(id);
+    val entity = entityOptional.orElseThrow(() -> new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, id.toString()));
+    getRepository().delete(entity);
   }
 
 }
