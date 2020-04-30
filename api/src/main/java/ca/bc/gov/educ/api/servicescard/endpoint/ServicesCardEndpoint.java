@@ -41,10 +41,6 @@ public interface ServicesCardEndpoint {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "BAD REQUEST"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
   ServicesCard updateServicesCard(@Validated @RequestBody ServicesCard servicesCard);
 
-  @GetMapping("/health")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
-  String health();
-
   @DeleteMapping
   @PreAuthorize("#oauth2.hasScope('DELETE_SERVICES_CARD')")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "NO CONTENT"), @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")})
