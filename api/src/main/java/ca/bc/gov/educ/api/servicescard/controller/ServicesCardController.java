@@ -74,12 +74,6 @@ public class ServicesCardController implements ServicesCardEndpoint {
   }
 
   @Override
-  public String health() {
-    log.trace("Health Check OK, returning OK");
-    return "OK";
-  }
-
-  @Override
   @Transactional
   public ResponseEntity<Void> deleteAll() {
     getService().deleteAll();
