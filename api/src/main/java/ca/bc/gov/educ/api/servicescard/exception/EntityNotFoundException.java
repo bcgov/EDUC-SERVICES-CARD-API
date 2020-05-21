@@ -1,10 +1,10 @@
 package ca.bc.gov.educ.api.servicescard.exception;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * EntityNotFoundException to provide more details in error description
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class EntityNotFoundException extends RuntimeException {
 
-    public EntityNotFoundException(Class clazz, String... searchParamsMap) {
+    public EntityNotFoundException(Class<?> clazz, String... searchParamsMap) {
         super(EntityNotFoundException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, searchParamsMap)));
     }
 
