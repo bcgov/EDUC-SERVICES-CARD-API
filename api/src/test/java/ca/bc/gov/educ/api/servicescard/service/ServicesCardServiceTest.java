@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DataJpaTest
 public class ServicesCardServiceTest {
 
-
 	@Autowired
 	ServicesCardRepository repository;
 	ServicesCardService service;
