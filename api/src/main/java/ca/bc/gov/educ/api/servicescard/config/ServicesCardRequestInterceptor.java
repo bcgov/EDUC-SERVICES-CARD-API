@@ -16,7 +16,7 @@ public class ServicesCardRequestInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (request.getMethod() != null && request.getRequestURL() != null)
-            log.info("{} {}", request.getMethod(), request.getRequestURL());
+            log.debug("{} {}", request.getMethod(), request.getRequestURL());
         if (request.getQueryString() != null)
             log.debug("Query string     : {}", request.getQueryString());
         return true;

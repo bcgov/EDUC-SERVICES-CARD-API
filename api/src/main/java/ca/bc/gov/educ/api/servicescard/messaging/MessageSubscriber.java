@@ -44,7 +44,7 @@ public class MessageSubscriber {
   @Autowired
   public MessageSubscriber(final ApplicationProperties applicationProperties, final EventHandlerService eventHandlerService) throws IOException, InterruptedException {
     this.eventHandlerService = eventHandlerService;
-    Options options = new Options.Builder().maxPingsOut(100)
+    Options options = new Options.Builder()
             .natsUrl(applicationProperties.getNatsUrl())
             .clusterId(applicationProperties.getNatsClusterId())
             .clientId("services-card-api-subscriber" + UUID.randomUUID().toString())
