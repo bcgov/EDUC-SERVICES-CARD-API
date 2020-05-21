@@ -30,7 +30,7 @@ public class ServicesCardEvent {
   private UUID eventId;
 
   @NotNull(message = "eventPayload cannot be null")
-  @Column(name = "EVENT_PAYLOAD")
+  @Column(name = "EVENT_PAYLOAD", length = 4000)
   private String eventPayload;
 
   @NotNull(message = "eventStatus cannot be null")

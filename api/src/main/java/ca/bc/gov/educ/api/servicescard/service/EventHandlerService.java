@@ -81,8 +81,7 @@ public class EventHandlerService {
     if (!optionalServicesCardEvent.isPresent()) {
       log.info(NO_RECORD_SAGA_ID_EVENT_TYPE);
       log.trace("Event is {}", event);
-      UUID servicesCardId = UUID.fromString(event.getEventPayload());
-      val optionalServicesCardEntity = getServicesCardRepository().findById(servicesCardId);
+      val optionalServicesCardEntity = getServicesCardRepository().findByDid(event.getEventPayload()); // expect did as a string in the payload.
       if (optionalServicesCardEntity.isPresent()) {
         val attachedEntity = optionalServicesCardEntity.get();
         event.setEventPayload(JsonUtil.getJsonStringFromObject(mapper.toStructure(attachedEntity))); //update the event with payload, need to convert to structure MANDATORY otherwise jackson will break.
@@ -108,7 +107,7 @@ public class EventHandlerService {
       log.info(NO_RECORD_SAGA_ID_EVENT_TYPE);
       log.trace(EVENT_LOG, event);
       ServicesCardEntity entity = mapper.toModel(JsonUtil.getJsonObjectFromString(ServicesCard.class, event.getEventPayload()));
-      val optionalServicesCardEntity = getServicesCardRepository().findById(entity.getServicesCardInfoID());
+      val optionalServicesCardEntity = getServicesCardRepository().findByDid(entity.getDid());
       if (optionalServicesCardEntity.isPresent()) {
         val attachedEntity = optionalServicesCardEntity.get();
         BeanUtils.copyProperties(entity, attachedEntity);

@@ -14,4 +14,5 @@ public interface ServicesCardEventRepository extends CrudRepository<ServicesCard
 
   List<ServicesCardEvent> findByEventStatus(String toString);
 
+  List<ServicesCardEvent> findAll();
 }

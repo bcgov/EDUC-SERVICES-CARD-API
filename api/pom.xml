@@ -18,7 +18,8 @@
         <sonar.language>java</sonar.language>
         <sonar.exclusions>
             src/main/resources/**,src/main/java/ca/bc/gov/educ/api/servicescard/mappers/**,src/main/java/ca/bc/gov/educ/api/servicescard/exception/**,src/main/java/ca/bc/gov/educ/api/servicescard/model/**,
-            src/main/java/ca/bc/gov/educ/api/servicescard/struct/**,src/main/java/ca/bc/gov/educ/api/servicescard/ServicesCardApiApplication.java
+            src/main/java/ca/bc/gov/educ/api/servicescard/struct/**,src/main/java/ca/bc/gov/educ/api/servicescard/ServicesCardApiApplication.java, src/main/java/ca/bc/gov/educ/api/servicescard/endpoint/ServicesCardEndpoint.java,
+            src/test/**
         </sonar.exclusions>
         <java.version>1.8</java.version>
 
@@ -96,7 +97,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>

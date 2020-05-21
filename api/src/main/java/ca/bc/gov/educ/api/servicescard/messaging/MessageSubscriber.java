@@ -69,11 +69,10 @@ public class MessageSubscriber {
       String messageData = new String(message.getData());
       if (messageData.contains("eventType")) {
         try {
-
           Event event = JsonUtil.getJsonObjectFromString(Event.class, messageData);
           getEventHandlerService().handleEvent(event);
         } catch (final Exception ex) {
-          log.error("Exception ", ex);
+          log.warn("Ignoring this Exception as it is not a valid json string of Event.", ex);
         }
       } else {
         log.info("Received Message :: {}", messageData);
