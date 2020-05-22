@@ -61,4 +61,6 @@ public class ServicesCard implements Serializable {
   String createUser;
   @Size(max = 32)
   String updateUser;
+  @Size(max = 50)
+  String subscriptionId;
 }

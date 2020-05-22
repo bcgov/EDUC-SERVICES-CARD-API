@@ -1,76 +1,97 @@
 package ca.bc.gov.educ.api.servicescard.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Table(name = "services_card_info")
+@Table(name = "SERVICES_CARD_INFO")
 @Data
+@DynamicUpdate
 public class ServicesCardEntity {
+
   @Id
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator", parameters = {
           @Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy")})
-  @Column(name = "services_card_info_id", unique = true, updatable = false, columnDefinition = "BINARY(16)")
+  @Column(name = "SERVICES_CARD_INFO_ID", unique = true, updatable = false, columnDefinition = "BINARY(16)")
   UUID servicesCardInfoID;
-  @NotNull(message = "Digital ID cannot be null")
-  @Column(name = "digital_identity_id", columnDefinition = "BINARY(16)")
+
+  @Column(name = "DIGITAL_IDENTITY_ID", columnDefinition = "BINARY(16)")
   UUID digitalIdentityID;
-  @NotNull(message = "did cannot be null")
-  @Column(name = "did", unique = true)
+
+  @Column(name = "DID", unique = true)
   String did;
-  @Column(name = "user_display_name")
+
+  @Column(name = "USER_DISPLAY_NAME")
   String userDisplayName;
-  @Column(name = "given_name")
+
+  @Column(name = "GIVEN_NAME")
   String givenName;
-  @Column(name = "given_names")
+
+  @Column(name = "GIVEN_NAMES")
   String givenNames;
-  @Column(name = "surname")
+
+  @Column(name = "SURNAME")
   String surname;
-  @Column(name = "birthdate")
+
+  @Column(name = "BIRTHDATE")
   @PastOrPresent
   LocalDate birthDate;
-  @Column(name = "gender")
+
+  @Column(name = "GENDER")
   String gender;
-  @NotNull(message = "Identity assurance level cannot be null")
-  @Column(name = "identity_assurance_level")
+
+  @Column(name = "IDENTITY_ASSURANCE_LEVEL")
   String identityAssuranceLevel;
+
   @Email(message = "Email must be valid email address")
-  @Column(name = "email")
+  @Column(name = "EMAIL")
   String email;
-  @NotNull(message = "Street address cannot be null")
-  @Column(name = "street_address")
+
+  @Column(name = "STREET_ADDRESS")
   String streetAddress;
-  @NotNull(message = "City cannot be null")
-  @Column(name = "city")
+
+  @Column(name = "CITY")
   String city;
-  @NotNull(message = "Province cannot be null")
-  @Column(name = "province")
-  String province;  
-  @NotNull(message = "Country cannot be null")
-  @Column(name = "country")
-  String country; 
-  @NotNull(message = "Postal code cannot be null")
-  @Column(name = "postal_code")
-  String postalCode;   
-  @Column(name = "create_user", updatable = false)
+
+  @Column(name = "PROVINCE")
+  String province;
+
+  @Column(name = "COUNTRY")
+  String country;
+
+  @Column(name = "POSTAL_CODE")
+  String postalCode;
+
+  @Column(name = "CREATE_USER", updatable = false)
   String createUser;
-  @Column(name = "create_date", updatable = false)
+
+  @Column(name = "CREATE_DATE", updatable = false)
   @PastOrPresent
   LocalDateTime createDate;
-  @Column(name = "update_user")
+
+  @Column(name = "UPDATE_USER")
   String updateUser;
-  @Column(name = "update_date")
+
+  @Column(name = "UPDATE_DATE")
   @PastOrPresent
   LocalDateTime updateDate;
 
+  @Column(name = "SUBSCRIPTION_ID")
+  String subscriptionId;
 }
