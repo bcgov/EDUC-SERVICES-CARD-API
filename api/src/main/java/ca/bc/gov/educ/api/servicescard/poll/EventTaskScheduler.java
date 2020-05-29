@@ -38,7 +38,7 @@ public class EventTaskScheduler {
     this.servicesCardEventRepository = servicesCardEventRepository;
   }
 
-  @Scheduled(cron = "0/1 * * * * *")
+ // @Scheduled(cron = "0/1 * * * * *")
   @SchedulerLock(name = "EventTablePoller",
           lockAtLeastFor = "900ms", lockAtMostFor = "950ms")
   public void pollEventTableAndPublish() throws InterruptedException, IOException, TimeoutException {

@@ -5,7 +5,7 @@ APP_NAME_UPPER=${APP_NAME^^}
 
 TZVALUE="America/Vancouver"
 SOAM_KC_REALM_ID="master"
-KCADM_FILE_BIN_FOLDER="/home/jenkins/workspace/${OPENSHIFT_NAMESPACE}-tools/keycloak-9.0.3/bin"
+KCADM_FILE_BIN_FOLDER="/tmp/keycloak-9.0.3/bin"
 
 oc project $OPENSHIFT_NAMESPACE-$envValue
 
@@ -33,6 +33,10 @@ soamFullPublicKey="-----BEGIN PUBLIC KEY----- $(getPublicKey) -----END PUBLIC KE
 newline=$'\n'
 formattedPublicKey="${soamFullPublicKey:0:26}${newline}${soamFullPublicKey:27:64}${newline}${soamFullPublicKey:91:64}${newline}${soamFullPublicKey:155:64}${newline}${soamFullPublicKey:219:64}${newline}${soamFullPublicKey:283:64}${newline}${soamFullPublicKey:347:64}${newline}${soamFullPublicKey:411:9}${newline}${soamFullPublicKey:420}"
 
+#READ_SERVICES_CARD
+$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+#WRITE_SERVICES_CARD
+$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 ###########################################################
 #Setup for config-map
