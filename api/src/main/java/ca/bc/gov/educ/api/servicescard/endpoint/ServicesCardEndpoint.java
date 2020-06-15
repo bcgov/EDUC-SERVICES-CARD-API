@@ -41,11 +41,6 @@ public interface ServicesCardEndpoint {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "BAD REQUEST"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
   ServicesCard updateServicesCard(@Validated @RequestBody ServicesCard servicesCard);
 
-  @DeleteMapping
-  @PreAuthorize("#oauth2.hasScope('DELETE_SERVICES_CARD')")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "NO CONTENT"), @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")})
-  ResponseEntity<Void> deleteAll();
-
   @DeleteMapping("/{id}")
   @PreAuthorize("#oauth2.hasScope('DELETE_SERVICES_CARD')")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "NO CONTENT"),  @ApiResponse(responseCode = "404", description = "NOT FOUND."), @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")})
