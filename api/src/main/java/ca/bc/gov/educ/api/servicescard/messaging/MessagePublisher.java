@@ -128,6 +128,15 @@ public class MessagePublisher implements Closeable {
     if (!executorService.isShutdown()) {
       executorService.shutdown();
     }
+    if(connection != null){
+      log.info("closing nats connection in the publisher...");
+      try {
+        connection.close();
+      } catch (IOException | TimeoutException | InterruptedException e) {
+        log.error("error while closing nats connection in the publisher...", e);
+      }
+      log.info("nats connection closed in the publisher...");
+    }
   }
 
 }
