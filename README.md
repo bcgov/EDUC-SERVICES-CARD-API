@@ -19,7 +19,7 @@ The services card api is simple CRU microservice (api/README.md).
 
 ## Documentation
 
-* [Services Card API Spec]()
+* [Services Card API Spec](https://services-card-api-mvubjx-test.pathfinder.gov.bc.ca/swagger-ui/index.html?url=/v3/api-docs)
 * [Openshift Readme](tools/README.md)
 * [PEN Registry Wiki](https://github.com/bcgov/EDUC-INFRA-COMMON/wiki)
 
