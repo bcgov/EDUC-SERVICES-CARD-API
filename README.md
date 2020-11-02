@@ -1,3 +1,9 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-SERVICES-CARD-API&metric=alert_status)](https://sonarcloud.io/dashboard?id=bcgov_EDUC-SERVICES-CARD-API)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-SERVICES-CARD-API&metric=coverage)](https://sonarcloud.io/dashboard?id=bcgov_EDUC-SERVICES-CARD-API)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-SERVICES-CARD-API&metric=ncloc)](https://sonarcloud.io/dashboard?id=bcgov_EDUC-SERVICES-CARD-API)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-SERVICES-CARD-API&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=bcgov_EDUC-SERVICES-CARD-API)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-SERVICES-CARD-API&metric=bugs)](https://sonarcloud.io/dashboard?id=bcgov_EDUC-DIGITALID-API)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=bcgov_EDUC-SERVICES-CARD-API&metric=security_rating)](https://sonarcloud.io/dashboard?id=bcgov_EDUC-SERVICES-CARD-API)
 # Ministry of Education PEN Registry
 Replacement of current personal education number (PEN) registry
 
