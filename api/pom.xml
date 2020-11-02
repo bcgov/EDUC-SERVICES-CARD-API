@@ -154,7 +154,7 @@
     <dependency>
       <groupId>net.javacrumbs.shedlock</groupId>
       <artifactId>shedlock-spring</artifactId>
-      <version>${net.javacrumbs.shedlock.version}</version>
+      <version>${shedlock.version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/net.javacrumbs.shedlock/shedlock-provider-jdbc-template -->
     <dependency>
