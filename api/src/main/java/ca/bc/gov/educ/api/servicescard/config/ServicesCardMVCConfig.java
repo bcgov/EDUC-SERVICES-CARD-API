@@ -20,6 +20,6 @@ public class ServicesCardMVCConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(servicesCardRequestInterceptor).addPathPatterns("/**/**/");
+        registry.addInterceptor(servicesCardRequestInterceptor).addPathPatterns("/**");
     }
 }
