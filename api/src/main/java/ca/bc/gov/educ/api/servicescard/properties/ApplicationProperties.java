@@ -11,16 +11,6 @@ import lombok.Setter;
  *
  * @author Marco Villeneuve
  */
-@Component
-@Getter
-@Setter
-public class ApplicationProperties {
-
-  @Value("${nats.streaming.server.url}")
-  @Getter
-  private String natsUrl;
-
-  @Value("${nats.streaming.server.clusterId}")
-  @Getter
-  private String natsClusterId;
+public final class ApplicationProperties {
+ private ApplicationProperties(){}
 }
