@@ -11,6 +11,16 @@ import lombok.Setter;
  *
  * @author Marco Villeneuve
  */
+@Component
+@Getter
+@Setter
 public final class ApplicationProperties {
- private ApplicationProperties(){}
+  @Value("${nats.server}")
+  private String server;
+
+ @Value("${nats.maxReconnect}")
+ private int maxReconnect;
+
+ @Value("${nats.connectionName}")
+ private String connectionName;
 }

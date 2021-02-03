@@ -19,6 +19,8 @@
       src/main/java/ca/bc/gov/educ/api/servicescard/struct/**,
       src/main/java/ca/bc/gov/educ/api/servicescard/ServicesCardApiApplication.java,
       src/main/java/ca/bc/gov/educ/api/servicescard/endpoint/**,
+      src/main/java/ca/bc/gov/educ/api/servicescard/messaging/**,
+      src/main/java/ca/bc/gov/educ/api/servicescard/properties/**,
       src/test/**
     </sonar.exclusions>
     <java.version>11</java.version>
@@ -185,8 +187,8 @@
     </dependency>
     <dependency>
       <groupId>io.nats</groupId>
-      <artifactId>nats-spring-boot-starter</artifactId>
-      <version>0.4.0</version>
+      <artifactId>jnats</artifactId>
+      <version>2.8.0</version>
     </dependency>
   </dependencies>
 

@@ -3,7 +3,9 @@ package ca.bc.gov.educ.api.servicescard.support;
 
 import ca.bc.gov.educ.api.servicescard.messaging.MessagePublisher;
 import ca.bc.gov.educ.api.servicescard.messaging.MessageSubscriber;
+import ca.bc.gov.educ.api.servicescard.messaging.NatsConnection;
 import ca.bc.gov.educ.api.servicescard.poll.EventTaskScheduler;
+import io.nats.client.Connection;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,4 +33,15 @@ public class MockConfiguration {
         return Mockito.mock(EventTaskScheduler.class);
     }
 
+    @Bean
+    @Primary
+    public Connection connection() {
+        return Mockito.mock(Connection.class);
+    }
+
+    @Bean
+    @Primary
+    public NatsConnection natsConnection() {
+        return Mockito.mock(NatsConnection.class);
+    }
 }
