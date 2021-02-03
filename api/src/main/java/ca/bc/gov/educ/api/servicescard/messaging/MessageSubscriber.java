@@ -17,14 +17,15 @@ import static ca.bc.gov.educ.api.servicescard.constants.Topics.SERVICES_CARD_API
 
 @Component
 @Slf4j
-public class MessageSubscriber extends MessagePubSub {
+public class MessageSubscriber {
 
   private final EventHandlerService eventHandlerService;
+  private final Connection connection;
 
   @Autowired
   public MessageSubscriber(final Connection con, EventHandlerService eventHandlerService) {
     this.eventHandlerService = eventHandlerService;
-    super.connection = con;
+    this.connection = con;
   }
 
   /**
