@@ -21,28 +21,28 @@ import static org.springframework.http.HttpStatus.CREATED;
 public interface ServicesCardEndpoint {
 
   @GetMapping("/{servicesCardID}")
-  @PreAuthorize("#oauth2.hasScope('READ_SERVICES_CARD')")
+  @PreAuthorize("hasAuthority('SCOPE_READ_SERVICES_CARD')")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
   ServicesCard readServicesCard(@PathVariable String servicesCardID);
 
   @GetMapping
-  @PreAuthorize("#oauth2.hasScope('READ_SERVICES_CARD')")
+  @PreAuthorize("hasAuthority('SCOPE_READ_SERVICES_CARD')")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "404", description = "NOT FOUND.")})
   ServicesCard searchServicesCard(@RequestParam("did") String did);
 
   @ResponseStatus(code = CREATED)
   @PostMapping
-  @PreAuthorize("#oauth2.hasAnyScope('WRITE_SERVICES_CARD')")
+  @PreAuthorize("hasAuthority('SCOPE_WRITE_SERVICES_CARD')")
   @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "CREATED"), @ApiResponse(responseCode = "400", description = "BAD REQUEST")})
   ServicesCard createServicesCard(@Validated @RequestBody ServicesCard servicesCard);
 
   @PutMapping
-  @PreAuthorize("#oauth2.hasAnyScope('WRITE_SERVICES_CARD')")
+  @PreAuthorize("hasAuthority('SCOPE_WRITE_SERVICES_CARD')")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"), @ApiResponse(responseCode = "400", description = "BAD REQUEST"), @ApiResponse(responseCode = "404", description = "NOT FOUND")})
   ServicesCard updateServicesCard(@Validated @RequestBody ServicesCard servicesCard);
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("#oauth2.hasScope('DELETE_SERVICES_CARD')")
+  @PreAuthorize("hasAuthority('DELETE_SERVICES_CARD')")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "NO CONTENT"),  @ApiResponse(responseCode = "404", description = "NOT FOUND."), @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")})
   ResponseEntity<Void> deleteById(@PathVariable UUID id);
 }

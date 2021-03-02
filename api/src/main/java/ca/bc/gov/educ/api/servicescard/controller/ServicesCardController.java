@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +32,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
  */
 
 @RestController
-@EnableResourceServer
 @Slf4j
 public class ServicesCardController implements ServicesCardEndpoint {
 
