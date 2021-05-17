@@ -1,6 +1,6 @@
 package ca.bc.gov.educ.api.servicescard.repository;
 
-import ca.bc.gov.educ.api.servicescard.model.ServicesCardEvent;
+import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEvent;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

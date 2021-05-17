@@ -1,6 +1,6 @@
 package ca.bc.gov.educ.api.servicescard.messaging;
 
-import ca.bc.gov.educ.api.servicescard.service.EventHandlerService;
+import ca.bc.gov.educ.api.servicescard.service.v1.EventHandlerService;
 import ca.bc.gov.educ.api.servicescard.struct.Event;
 import ca.bc.gov.educ.api.servicescard.utils.JsonUtil;
 import io.nats.client.Connection;

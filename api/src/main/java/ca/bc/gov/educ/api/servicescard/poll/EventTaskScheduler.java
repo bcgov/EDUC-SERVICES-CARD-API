@@ -3,13 +3,14 @@ package ca.bc.gov.educ.api.servicescard.poll;
 import ca.bc.gov.educ.api.servicescard.constants.EventOutcome;
 import ca.bc.gov.educ.api.servicescard.constants.EventType;
 import ca.bc.gov.educ.api.servicescard.messaging.MessagePublisher;
-import ca.bc.gov.educ.api.servicescard.model.ServicesCardEvent;
+import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEvent;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardEventRepository;
 import ca.bc.gov.educ.api.servicescard.struct.Event;
 import ca.bc.gov.educ.api.servicescard.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -59,16 +60,16 @@ public class EventTaskScheduler {
   }
 
   private byte[] servicesCardEventProcessed(ServicesCardEvent servicesCardEvent) throws JsonProcessingException {
-    Event event = Event.builder()
-            .sagaId(servicesCardEvent.getSagaId())
-            .eventType(EventType.valueOf(servicesCardEvent.getEventType()))
-            .eventOutcome(EventOutcome.valueOf(servicesCardEvent.getEventOutcome()))
-            .eventPayload(servicesCardEvent.getEventPayload()).build();
+    val event = Event.builder()
+      .sagaId(servicesCardEvent.getSagaId())
+      .eventType(EventType.valueOf(servicesCardEvent.getEventType()))
+      .eventOutcome(EventOutcome.valueOf(servicesCardEvent.getEventOutcome()))
+      .eventPayload(servicesCardEvent.getEventPayload()).build();
     return JsonUtil.getJsonStringFromObject(event).getBytes();
   }
 
   private byte[] createOutboxEvent(ServicesCardEvent servicesCardEvent) throws JsonProcessingException {
-    Event event = Event.builder().eventType(EventType.SERVICES_CARD_EVENT_OUTBOX_PROCESSED).eventPayload(servicesCardEvent.getEventId().toString()).build();
+    val event = Event.builder().eventType(EventType.SERVICES_CARD_EVENT_OUTBOX_PROCESSED).eventPayload(servicesCardEvent.getEventId().toString()).build();
     return JsonUtil.getJsonStringFromObject(event).getBytes();
   }
 }

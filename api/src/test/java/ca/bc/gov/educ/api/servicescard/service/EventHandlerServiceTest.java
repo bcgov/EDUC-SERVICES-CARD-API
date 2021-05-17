@@ -3,12 +3,13 @@ package ca.bc.gov.educ.api.servicescard.service;
 import ca.bc.gov.educ.api.servicescard.constants.EventOutcome;
 import ca.bc.gov.educ.api.servicescard.constants.EventStatus;
 import ca.bc.gov.educ.api.servicescard.constants.EventType;
-import ca.bc.gov.educ.api.servicescard.mappers.ServicesCardMapper;
-import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
+import ca.bc.gov.educ.api.servicescard.mappers.v1.ServicesCardMapper;
+import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardEventRepository;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
+import ca.bc.gov.educ.api.servicescard.service.v1.EventHandlerService;
 import ca.bc.gov.educ.api.servicescard.struct.Event;
-import ca.bc.gov.educ.api.servicescard.struct.ServicesCard;
+import ca.bc.gov.educ.api.servicescard.struct.v1.ServicesCard;
 import ca.bc.gov.educ.api.servicescard.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.val;
@@ -39,24 +40,24 @@ public class EventHandlerServiceTest {
 
   @Before
   public void before() {
-    eventHandlerService = new EventHandlerService(servicesCardRepository, servicesCardEventRepository);
+    this.eventHandlerService = new EventHandlerService(this.servicesCardRepository, this.servicesCardEventRepository);
   }
 
   @After
   public void after() {
-    servicesCardEventRepository.deleteAll();
-    servicesCardRepository.deleteAll();
+    this.servicesCardEventRepository.deleteAll();
+    this.servicesCardRepository.deleteAll();
   }
 
   @Test
   public void testGetServicesCardEvent_WhenEventPayloadContainsValidDID_ShouldCreateADBRecordWithSERVICES_CARD_FOUND() {
-    ServicesCardEntity servicesCard = getServicesCardEntity();
-    servicesCardRepository.save(servicesCard);
-    Event getEvent = createDummyGetServiceCardEvent(did);
-    eventHandlerService.handleEvent(getEvent);
-    val serviceCardEvents = servicesCardEventRepository.findAll();
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    this.servicesCardRepository.save(servicesCard);
+    final Event getEvent = this.createDummyGetServiceCardEvent(did);
+    this.eventHandlerService.handleEvent(getEvent);
+    val serviceCardEvents = this.servicesCardEventRepository.findAll();
 
-    assertThat(serviceCardEvents.size() == 1).isTrue();
+    assertThat(serviceCardEvents.size()).isSameAs(1);
     val serviceCardEvent = serviceCardEvents.get(0);
     assertThat(serviceCardEvent.getEventStatus().equalsIgnoreCase(EventStatus.DB_COMMITTED.toString())).isTrue();
     assertThat(serviceCardEvent.getEventOutcome().equalsIgnoreCase(EventOutcome.SERVICES_CARD_FOUND.toString())).isTrue();
@@ -64,13 +65,13 @@ public class EventHandlerServiceTest {
 
   @Test
   public void testGetServicesCardEvent_WhenEventPayloadContainsInvalidDID_ShouldCreateADBRecordWithSERVICES_CARD_NOT_FOUND() {
-    ServicesCardEntity servicesCard = getServicesCardEntity();
-    servicesCardRepository.save(servicesCard);
-    Event getEvent = createDummyGetServiceCardEvent("1212213");
-    eventHandlerService.handleEvent(getEvent);
-    val serviceCardEvents = servicesCardEventRepository.findAll();
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    this.servicesCardRepository.save(servicesCard);
+    final Event getEvent = this.createDummyGetServiceCardEvent("1212213");
+    this.eventHandlerService.handleEvent(getEvent);
+    val serviceCardEvents = this.servicesCardEventRepository.findAll();
 
-    assertThat(serviceCardEvents.size() == 1).isTrue();
+    assertThat(serviceCardEvents.size()).isSameAs(1);
     val serviceCardEvent = serviceCardEvents.get(0);
     assertThat(serviceCardEvent.getEventStatus().equalsIgnoreCase(EventStatus.DB_COMMITTED.toString())).isTrue();
     assertThat(serviceCardEvent.getEventOutcome().equalsIgnoreCase(EventOutcome.SERVICES_CARD_NOT_FOUND.toString())).isTrue();
@@ -78,15 +79,15 @@ public class EventHandlerServiceTest {
 
   @Test
   public void testUpdateServicesCardEvent_WhenEventPayloadContainsInvalidDID_ShouldCreateADBRecordWithSERVICES_CARD_NOT_FOUND() throws JsonProcessingException {
-    ServicesCardEntity servicesCard = getServicesCardEntity();
-    servicesCardRepository.save(servicesCard);
-    ServicesCard servicesCardStruct = ServicesCardMapper.mapper.toStructure(servicesCard);
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    this.servicesCardRepository.save(servicesCard);
+    final ServicesCard servicesCardStruct = ServicesCardMapper.mapper.toStructure(servicesCard);
     servicesCardStruct.setDid("23213123123");
-    Event getEvent = createDummyUpdateServiceCardEvent(JsonUtil.getJsonStringFromObject(servicesCardStruct));
-    eventHandlerService.handleEvent(getEvent);
-    val serviceCardEvents = servicesCardEventRepository.findAll();
+    final Event getEvent = this.createDummyUpdateServiceCardEvent(JsonUtil.getJsonStringFromObject(servicesCardStruct));
+    this.eventHandlerService.handleEvent(getEvent);
+    val serviceCardEvents = this.servicesCardEventRepository.findAll();
 
-    assertThat(serviceCardEvents.size() == 1).isTrue();
+    assertThat(serviceCardEvents.size()).isSameAs(1);
     val serviceCardEvent = serviceCardEvents.get(0);
     assertThat(serviceCardEvent.getEventStatus().equalsIgnoreCase(EventStatus.DB_COMMITTED.toString())).isTrue();
     assertThat(serviceCardEvent.getEventOutcome().equalsIgnoreCase(EventOutcome.SERVICES_CARD_NOT_FOUND.toString())).isTrue();
@@ -94,42 +95,43 @@ public class EventHandlerServiceTest {
 
   @Test
   public void testUpdateServicesCardEvent_WhenEventPayloadContainsValidDID_ShouldCreateADBRecordWithSERVICES_CARD_UPDATED() throws JsonProcessingException {
-    ServicesCardEntity servicesCard = getServicesCardEntity();
-    servicesCardRepository.save(servicesCard);
-    ServicesCard servicesCardStruct = ServicesCardMapper.mapper.toStructure(servicesCard);
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    this.servicesCardRepository.save(servicesCard);
+    final ServicesCard servicesCardStruct = ServicesCardMapper.mapper.toStructure(servicesCard);
     servicesCardStruct.setCity("VICTORIA");
-    Event getEvent = createDummyUpdateServiceCardEvent(JsonUtil.getJsonStringFromObject(servicesCardStruct));
-    eventHandlerService.handleEvent(getEvent);
-    val serviceCardEvents = servicesCardEventRepository.findAll();
+    final Event getEvent = this.createDummyUpdateServiceCardEvent(JsonUtil.getJsonStringFromObject(servicesCardStruct));
+    this.eventHandlerService.handleEvent(getEvent);
+    val serviceCardEvents = this.servicesCardEventRepository.findAll();
 
-    assertThat(serviceCardEvents.size() == 1).isTrue();
+    assertThat(serviceCardEvents.size()).isSameAs(1);
     val serviceCardEvent = serviceCardEvents.get(0);
     assertThat(serviceCardEvent.getEventStatus().equalsIgnoreCase(EventStatus.DB_COMMITTED.toString())).isTrue();
     assertThat(serviceCardEvent.getEventOutcome().equalsIgnoreCase(EventOutcome.SERVICES_CARD_UPDATED.toString())).isTrue();
-    val optionalServicesCardEntity = servicesCardRepository.findByDid(did);
+    val optionalServicesCardEntity = this.servicesCardRepository.findByDid(did);
     assertThat(optionalServicesCardEntity.isPresent()).isTrue();
     assertThat(optionalServicesCardEntity.get().getCity().equals("VICTORIA")).isTrue();
   }
-  public Event createDummyOutBoxEvent(UUID eventId) {
+
+  public Event createDummyOutBoxEvent(final UUID eventId) {
     return Event.builder().eventType(EventType.SERVICES_CARD_EVENT_OUTBOX_PROCESSED).eventPayload(eventId.toString()).build();
   }
 
-  public Event createDummyGetServiceCardEvent(String did) {
+  public Event createDummyGetServiceCardEvent(final String did) {
     return Event.builder()
-        .sagaId(UUID.randomUUID())
-        .eventType(EventType.valueOf("GET_SERVICES_CARD"))
-        .eventPayload(did).build();
+      .sagaId(UUID.randomUUID())
+      .eventType(EventType.valueOf("GET_SERVICES_CARD"))
+      .eventPayload(did).build();
   }
 
-  public Event createDummyUpdateServiceCardEvent(String payload) {
+  public Event createDummyUpdateServiceCardEvent(final String payload) {
     return Event.builder()
-        .sagaId(UUID.randomUUID())
-        .eventType(EventType.valueOf("UPDATE_SERVICES_CARD"))
-        .eventPayload(payload).build();
+      .sagaId(UUID.randomUUID())
+      .eventType(EventType.valueOf("UPDATE_SERVICES_CARD"))
+      .eventPayload(payload).build();
   }
 
   private ServicesCardEntity getServicesCardEntity() {
-    ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
+    final ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
     servicesCardEntity.setDigitalIdentityID(UUID.randomUUID());
     servicesCardEntity.setBirthDate(LocalDate.parse("1979-06-11"));
     servicesCardEntity.setCity("Compton");

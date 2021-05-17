@@ -1,13 +1,13 @@
-package ca.bc.gov.educ.api.servicescard.service;
+package ca.bc.gov.educ.api.servicescard.service.v1;
 
 import ca.bc.gov.educ.api.servicescard.constants.EventOutcome;
-import ca.bc.gov.educ.api.servicescard.mappers.ServicesCardMapper;
-import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
-import ca.bc.gov.educ.api.servicescard.model.ServicesCardEvent;
+import ca.bc.gov.educ.api.servicescard.mappers.v1.ServicesCardMapper;
+import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEntity;
+import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEvent;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardEventRepository;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
 import ca.bc.gov.educ.api.servicescard.struct.Event;
-import ca.bc.gov.educ.api.servicescard.struct.ServicesCard;
+import ca.bc.gov.educ.api.servicescard.struct.v1.ServicesCard;
 import ca.bc.gov.educ.api.servicescard.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
