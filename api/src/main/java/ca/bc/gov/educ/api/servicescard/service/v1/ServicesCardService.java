@@ -1,11 +1,9 @@
-package ca.bc.gov.educ.api.servicescard.service;
+package ca.bc.gov.educ.api.servicescard.service.v1;
 
 import ca.bc.gov.educ.api.servicescard.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.servicescard.exception.InvalidParameterException;
-import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
+import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +26,10 @@ public class ServicesCardService {
   private static final String SERVICES_CARD_ID_ATTRIBUTE = "servicesCardInfoID";
   public static final String SERVICES_CARD_API = "SERVICES_CARD_API";
 
-  @Getter(AccessLevel.PRIVATE)
   private final ServicesCardRepository repository;
 
-  public ServicesCardService(@Autowired final ServicesCardRepository repository) {
+  @Autowired
+  public ServicesCardService(final ServicesCardRepository repository) {
     this.repository = repository;
   }
 
@@ -42,8 +40,8 @@ public class ServicesCardService {
    * @return the Student entity if found.
    * @throws EntityNotFoundException if the entity is not found in the  database by its GUID.
    */
-  public ServicesCardEntity retrieveServicesCard(UUID studentID) {
-    Optional<ServicesCardEntity> result = repository.findById(studentID);
+  public ServicesCardEntity retrieveServicesCard(final UUID studentID) {
+    final Optional<ServicesCardEntity> result = this.repository.findById(studentID);
     if (result.isPresent()) {
       return result.get();
     } else {
@@ -57,9 +55,8 @@ public class ServicesCardService {
    * @param did the identifier to be used for searching.
    * @return {@link ServicesCardEntity}
    */
-  public ServicesCardEntity searchServicesCard(String did) {
-    Optional<ServicesCardEntity> result = repository.findByDid(did.toUpperCase());
-
+  public ServicesCardEntity searchServicesCard(final String did) {
+    final Optional<ServicesCardEntity> result = this.repository.findByDid(did.toUpperCase());
     if (result.isPresent()) {
       return result.get();
     } else {
@@ -75,52 +72,40 @@ public class ServicesCardService {
    * @return the saved instance.
    * @throws InvalidParameterException if Student GUID is passed in the payload for the post operation it will throw this exception.
    */
-  public ServicesCardEntity createServicesCard(ServicesCardEntity servicesCardEntity) {
-
+  public ServicesCardEntity createServicesCard(final ServicesCardEntity servicesCardEntity) {
     servicesCardEntity.setCreateUser(SERVICES_CARD_API);
     servicesCardEntity.setUpdateUser(SERVICES_CARD_API);
     servicesCardEntity.setUpdateDate(LocalDateTime.now());
     servicesCardEntity.setCreateDate(LocalDateTime.now());
-
-    return repository.save(servicesCardEntity);
+    return this.repository.save(servicesCardEntity);
   }
 
   /**
    * Updates a ServicesCardEntity
    *
-   * @param serviceCard the payload which will update the DB record for the given student.
+   * @param serviceCard        the payload which will update the DB record for the given student.
+   * @param servicesCardInfoID the PK
    * @return the updated entity.
    * @throws EntityNotFoundException if the entity does not exist in the DB.
    */
-  public ServicesCardEntity updateServicesCard(ServicesCardEntity serviceCard) {
-
-    Optional<ServicesCardEntity> curServicesCardEntity = repository.findById(serviceCard.getServicesCardInfoID());
-
+  public ServicesCardEntity updateServicesCard(final ServicesCardEntity serviceCard, final UUID servicesCardInfoID) {
+    final Optional<ServicesCardEntity> curServicesCardEntity = this.repository.findById(servicesCardInfoID);
     if (curServicesCardEntity.isPresent()) {
-      final ServicesCardEntity newServicesCardEntity = curServicesCardEntity.get();
-      String createUser = newServicesCardEntity.getCreateUser();
-      LocalDateTime createDate = newServicesCardEntity.getCreateDate();
-      BeanUtils.copyProperties(serviceCard, newServicesCardEntity);
+      val newServicesCardEntity = curServicesCardEntity.get();
+      BeanUtils.copyProperties(serviceCard, newServicesCardEntity, "createUser", "createDate");
       newServicesCardEntity.setUpdateUser(SERVICES_CARD_API);
       newServicesCardEntity.setUpdateDate(LocalDateTime.now());
-      newServicesCardEntity.setCreateUser(createUser);
-      newServicesCardEntity.setCreateDate(createDate);
-      return repository.save(newServicesCardEntity);
+      return this.repository.save(newServicesCardEntity);
     } else {
       throw new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, serviceCard.getServicesCardInfoID().toString());
     }
   }
 
   @Transactional(propagation = Propagation.MANDATORY)
-  public void deleteAll() {
-    getRepository().deleteAll();
-  }
-
-  @Transactional(propagation = Propagation.MANDATORY)
-  public void deleteById(UUID id) {
-    val entityOptional = getRepository().findById(id);
+  public void deleteById(final UUID id) {
+    val entityOptional = this.repository.findById(id);
     val entity = entityOptional.orElseThrow(() -> new EntityNotFoundException(ServicesCardEntity.class, SERVICES_CARD_ID_ATTRIBUTE, id.toString()));
-    getRepository().delete(entity);
+    this.repository.delete(entity);
   }
 
 }

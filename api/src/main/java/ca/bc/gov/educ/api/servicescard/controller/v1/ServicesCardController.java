@@ -1,12 +1,12 @@
-package ca.bc.gov.educ.api.servicescard.controller;
+package ca.bc.gov.educ.api.servicescard.controller.v1;
 
-import ca.bc.gov.educ.api.servicescard.endpoint.ServicesCardEndpoint;
+import ca.bc.gov.educ.api.servicescard.endpoint.v1.ServicesCardEndpoint;
 import ca.bc.gov.educ.api.servicescard.exception.InvalidParameterException;
 import ca.bc.gov.educ.api.servicescard.exception.InvalidPayloadException;
 import ca.bc.gov.educ.api.servicescard.exception.errors.ApiError;
-import ca.bc.gov.educ.api.servicescard.mappers.ServicesCardMapper;
-import ca.bc.gov.educ.api.servicescard.service.ServicesCardService;
-import ca.bc.gov.educ.api.servicescard.struct.ServicesCard;
+import ca.bc.gov.educ.api.servicescard.mappers.v1.ServicesCardMapper;
+import ca.bc.gov.educ.api.servicescard.service.v1.ServicesCardService;
+import ca.bc.gov.educ.api.servicescard.struct.v1.ServicesCard;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -45,36 +45,40 @@ public class ServicesCardController implements ServicesCardEndpoint {
     this.service = servicesCardService;
   }
 
-  public ServicesCard readServicesCard(String servicesCardID) {
-    return mapper.toStructure(service.retrieveServicesCard(UUID.fromString(servicesCardID)));
+  @Override
+  public ServicesCard readServicesCard(final String servicesCardID) {
+    return mapper.toStructure(this.service.retrieveServicesCard(UUID.fromString(servicesCardID)));
   }
 
   @Override
-  public ServicesCard searchServicesCard(String did) {
-    return mapper.toStructure(service.searchServicesCard(did));
+  public ServicesCard searchServicesCard(final String did) {
+    return mapper.toStructure(this.service.searchServicesCard(did));
   }
 
-  public ServicesCard createServicesCard(ServicesCard servicesCard) {
-    if (servicesCard.getServicesCardInfoID() != null)
+  @Override
+  public ServicesCard createServicesCard(final ServicesCard servicesCard) {
+    if (servicesCard.getServicesCardInfoID() != null) {
       throw new InvalidParameterException("servicesCardInfoID");
+    }
     if (LocalDate.parse(servicesCard.getBirthDate()).isAfter(LocalDate.now())) {
-      ApiError error = ApiError.builder().timestamp(LocalDateTime.now()).message("Payload contains invalid data.").status(BAD_REQUEST).build();
-      List<FieldError> errors = new ArrayList<>();
+      final ApiError error = ApiError.builder().timestamp(LocalDateTime.now()).message("Payload contains invalid data.").status(BAD_REQUEST).build();
+      final List<FieldError> errors = new ArrayList<>();
       errors.add(new FieldError("servicesCard", "birthDate", servicesCard.getBirthDate(), false, null, null, "Birth date should be in past."));
       error.addValidationErrors(errors);
       throw new InvalidPayloadException(error);
     }
-    return mapper.toStructure(service.createServicesCard(mapper.toModel(servicesCard)));
+    return mapper.toStructure(this.service.createServicesCard(mapper.toModel(servicesCard)));
   }
 
-  public ServicesCard updateServicesCard(ServicesCard servicesCard) {
-    return mapper.toStructure(service.updateServicesCard(mapper.toModel(servicesCard)));
+  @Override
+  public ServicesCard updateServicesCard(final ServicesCard servicesCard, final UUID servicesCardInfoID) {
+    return mapper.toStructure(this.service.updateServicesCard(mapper.toModel(servicesCard), servicesCardInfoID));
   }
 
   @Override
   @Transactional
   public ResponseEntity<Void> deleteById(final UUID id) {
-    getService().deleteById(id);
+    this.getService().deleteById(id);
     return ResponseEntity.noContent().build();
   }
 

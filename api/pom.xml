@@ -21,6 +21,8 @@
       src/main/java/ca/bc/gov/educ/api/servicescard/endpoint/**,
       src/main/java/ca/bc/gov/educ/api/servicescard/messaging/**,
       src/main/java/ca/bc/gov/educ/api/servicescard/properties/**,
+      src/main/java/ca/bc/gov/educ/api/servicescard/config/**,
+      src/main/java/ca/bc/gov/educ/api/servicescard/utils/**,
       src/test/**
     </sonar.exclusions>
     <java.version>11</java.version>

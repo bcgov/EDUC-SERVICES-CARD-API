@@ -1,7 +1,9 @@
-package ca.bc.gov.educ.api.servicescard.mappers;
+package ca.bc.gov.educ.api.servicescard.mappers.v1;
 
-import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
-import ca.bc.gov.educ.api.servicescard.struct.ServicesCard;
+import ca.bc.gov.educ.api.servicescard.mappers.LocalDateTimeMapper;
+import ca.bc.gov.educ.api.servicescard.mappers.UUIDMapper;
+import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEntity;
+import ca.bc.gov.educ.api.servicescard.struct.v1.ServicesCard;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

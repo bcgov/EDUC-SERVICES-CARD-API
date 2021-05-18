@@ -1,8 +1,9 @@
 package ca.bc.gov.educ.api.servicescard.service;
 
 import ca.bc.gov.educ.api.servicescard.exception.EntityNotFoundException;
-import ca.bc.gov.educ.api.servicescard.model.ServicesCardEntity;
+import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
+import ca.bc.gov.educ.api.servicescard.service.v1.ServicesCardService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -28,44 +28,44 @@ public class ServicesCardServiceTest {
 
   @Before
   public void before() {
-    service = new ServicesCardService(repository);
+    this.service = new ServicesCardService(this.repository);
   }
 
   @Test
-  public void testCreateServicesCard_WhenPayloadIsValid_ShouldReturnSavedObject() throws ParseException {
-    ServicesCardEntity servicesCard = getServicesCardEntity();
-    assertNotNull(service.createServicesCard(servicesCard));
+  public void testCreateServicesCard_WhenPayloadIsValid_ShouldReturnSavedObject() {
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    assertNotNull(this.service.createServicesCard(servicesCard));
     assertNotNull(servicesCard.getServicesCardInfoID());
   }
 
 
   @Test
-  public void testRetrieveServicesCard_WhenServicesCardExistInDB_ShouldReturnServicesCard() throws ParseException {
-    ServicesCardEntity servicesCard = getServicesCardEntity();
-    assertNotNull(service.createServicesCard(servicesCard));
-    assertNotNull(service.retrieveServicesCard(servicesCard.getServicesCardInfoID()));
+  public void testRetrieveServicesCard_WhenServicesCardExistInDB_ShouldReturnServicesCard() {
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    assertNotNull(this.service.createServicesCard(servicesCard));
+    assertNotNull(this.service.retrieveServicesCard(servicesCard.getServicesCardInfoID()));
   }
 
   @Test
   public void testRetrieveServicesCard_WhenServicesCardDoesNotExistInDB_ShouldThrowEntityNotFoundException() {
-    UUID id = UUID.fromString("00000000-0000-0000-0000-f3b2d4f20000");
+    final UUID id = UUID.fromString("00000000-0000-0000-0000-f3b2d4f20000");
     assertThrows(EntityNotFoundException.class,
-        () -> service.retrieveServicesCard(id));
+      () -> this.service.retrieveServicesCard(id));
   }
 
   @Test
-  public void testUpdateServicesCard_WhenPayloadIsValid_ShouldReturnTheUpdatedObject() throws ParseException {
-    ServicesCardEntity servicesCard = getServicesCardEntity();
-    servicesCard = service.createServicesCard(servicesCard);
+  public void testUpdateServicesCard_WhenPayloadIsValid_ShouldReturnTheUpdatedObject() {
+    ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    servicesCard = this.service.createServicesCard(servicesCard);
     servicesCard.setGivenName("updatedFirstName");
-    ServicesCardEntity updateEntity = service.updateServicesCard(servicesCard);
+    final ServicesCardEntity updateEntity = this.service.updateServicesCard(servicesCard, servicesCard.getServicesCardInfoID());
     assertNotNull(updateEntity);
     assertNotNull(updateEntity.getUpdateDate());
-    assertThat(updateEntity.getGivenName().equals("updatedFirstName")).isTrue();
+    assertThat(updateEntity.getGivenName()).isEqualTo("updatedFirstName");
   }
 
-  private ServicesCardEntity getServicesCardEntity() throws ParseException {
-    ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
+  private ServicesCardEntity getServicesCardEntity() {
+    final ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
     servicesCardEntity.setDigitalIdentityID(UUID.randomUUID());
     servicesCardEntity.setBirthDate(LocalDate.parse("1979-06-11"));
     servicesCardEntity.setCity("Compton");

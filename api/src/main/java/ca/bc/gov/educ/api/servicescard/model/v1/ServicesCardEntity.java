@@ -1,4 +1,4 @@
-package ca.bc.gov.educ.api.servicescard.model;
+package ca.bc.gov.educ.api.servicescard.model.v1;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

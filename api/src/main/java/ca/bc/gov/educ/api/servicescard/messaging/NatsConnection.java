@@ -7,6 +7,7 @@ import io.nats.client.ConnectionListener;
 import io.nats.client.Nats;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.jboss.threads.EnhancedQueueExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,17 +39,17 @@ public class NatsConnection implements Closeable {
   }
 
   private Connection connectToNats(String serverUrl, int maxReconnect, String connectionName) throws IOException, InterruptedException {
-    io.nats.client.Options natsOptions = new io.nats.client.Options.Builder()
-        .connectionListener(this::connectionListener)
-        .maxPingsOut(5)
-        .pingInterval(Duration.ofSeconds(2))
-        .connectionName(connectionName)
-        .connectionTimeout(Duration.ofSeconds(5))
-        .executor(new EnhancedQueueExecutor.Builder()
-            .setThreadFactory(new ThreadFactoryBuilder().setNameFormat("core-nats-%d").build())
-            .setCorePoolSize(10).setMaximumPoolSize(10).setKeepAliveTime(Duration.ofSeconds(60)).build())
-        .maxReconnects(maxReconnect)
-        .reconnectWait(Duration.ofSeconds(2))
+    val natsOptions = new io.nats.client.Options.Builder()
+      .connectionListener(this::connectionListener)
+      .maxPingsOut(5)
+      .pingInterval(Duration.ofSeconds(2))
+      .connectionName(connectionName)
+      .connectionTimeout(Duration.ofSeconds(5))
+      .executor(new EnhancedQueueExecutor.Builder()
+        .setThreadFactory(new ThreadFactoryBuilder().setNameFormat("core-nats-%d").build())
+        .setCorePoolSize(10).setMaximumPoolSize(50).setKeepAliveTime(Duration.ofSeconds(60)).build())
+      .maxReconnects(maxReconnect)
+      .reconnectWait(Duration.ofSeconds(2))
         .servers(new String[]{serverUrl})
         .build();
     return Nats.connect(natsOptions);
