@@ -164,6 +164,23 @@ public class ServicesCardControllerTest {
   }
 
   @Test
+  public void updateServicesCard_givenRandomID_shouldReturnNotFound() throws Exception {
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    val savedEntity = this.service.createServicesCard(servicesCard);
+    assertNotNull(savedEntity);
+    assertNotNull(savedEntity.getServicesCardInfoID());
+    val payload = ServicesCardMapper.mapper.toStructure(savedEntity);
+    payload.setCreateDate(null);
+    payload.setCreateUser(null);
+    payload.setUpdateDate(null);
+    this.mockMvc
+      .perform(put(BASE_URL + "/" + UUID.randomUUID())
+        .with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_SERVICES_CARD")))
+        .contentType(APPLICATION_JSON).accept(APPLICATION_JSON).content(JsonUtil.getJsonStringFromObject(payload)))
+      .andDo(print()).andExpect(status().isNotFound());
+  }
+
+  @Test
   public void deleteById() throws Exception {
     final ServicesCardEntity servicesCard = this.getServicesCardEntity();
     val savedEntity = this.service.createServicesCard(servicesCard);

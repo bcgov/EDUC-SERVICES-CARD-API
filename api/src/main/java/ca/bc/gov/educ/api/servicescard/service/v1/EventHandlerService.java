@@ -5,7 +5,6 @@ import ca.bc.gov.educ.api.servicescard.constants.EventType;
 import ca.bc.gov.educ.api.servicescard.mappers.v1.ServicesCardMapper;
 import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEvent;
-import ca.bc.gov.educ.api.servicescard.repository.ServicesCardEventRepository;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
 import ca.bc.gov.educ.api.servicescard.struct.Event;
 import ca.bc.gov.educ.api.servicescard.struct.v1.ServicesCard;
@@ -31,13 +30,10 @@ public class EventHandlerService {
   private static final ServicesCardMapper mapper = ServicesCardMapper.mapper;
   @Getter(PRIVATE)
   private final ServicesCardRepository servicesCardRepository;
-  @Getter(PRIVATE)
-  private final ServicesCardEventRepository servicesCardEventRepository;
 
   @Autowired
-  public EventHandlerService(final ServicesCardRepository servicesCardRepository, final ServicesCardEventRepository servicesCardEventRepository) {
+  public EventHandlerService(final ServicesCardRepository servicesCardRepository) {
     this.servicesCardRepository = servicesCardRepository;
-    this.servicesCardEventRepository = servicesCardEventRepository;
   }
 
 
