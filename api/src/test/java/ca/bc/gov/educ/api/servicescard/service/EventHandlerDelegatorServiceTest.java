@@ -71,6 +71,20 @@ public class EventHandlerDelegatorServiceTest {
   }
 
   @Test
+  public void testGetServicesCardEvent_whenEventPayloadContainsValidDID_ShouldCreateADBRecordWithSERVICES_CARD_FOUND() {
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    this.servicesCardRepository.save(servicesCard);
+    final Event getEvent = this.createDummyGetServiceCardEvent(did);
+    this.eventHandlerDelegatorService.handleEvent(NatsMessageImpl.builder().replyTo("synChannel").build(), getEvent);
+    Mockito.verify(messagePublisher).dispatchMessage(subjectCaptor.capture(), responseEventCaptor.capture());
+    final String subject = subjectCaptor.getValue();
+    assertThat(subject).isEqualTo("synChannel");
+    val responseEvent = JsonUtil.getJsonObjectFromString(Event.class, new String(responseEventCaptor.getValue()));
+    assertThat(responseEvent.getEventPayload()).isNotBlank();
+    assertThat(responseEvent.getEventOutcome()).isEqualTo(EventOutcome.SERVICES_CARD_FOUND);
+  }
+
+  @Test
   public void testGetServicesCardEvent_WhenEventPayloadContainsInvalidDID_ShouldCreateADBRecordWithSERVICES_CARD_NOT_FOUND() {
     final ServicesCardEntity servicesCard = this.getServicesCardEntity();
     this.servicesCardRepository.save(servicesCard);

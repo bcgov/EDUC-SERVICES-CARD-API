@@ -109,6 +109,44 @@ public class ServicesCardControllerTest {
   }
 
   @Test
+  public void createServicesCard_givenInvalidPayload_shouldReturn400() throws Exception {
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    val savedEntity = this.service.createServicesCard(servicesCard);
+    assertNotNull(savedEntity);
+    assertNotNull(savedEntity.getServicesCardInfoID());
+    val payload = ServicesCardMapper.mapper.toStructure(savedEntity);
+    payload.setCreateDate(null);
+    payload.setCreateUser(null);
+    payload.setUpdateDate(null);
+    payload.setServicesCardInfoID(null);
+    payload.setBirthDate("2300-12-31");
+    payload.setDid("1236456");
+    this.mockMvc
+      .perform(post(BASE_URL)
+        .with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_SERVICES_CARD")))
+        .contentType(APPLICATION_JSON).accept(APPLICATION_JSON).content(JsonUtil.getJsonStringFromObject(payload)))
+      .andDo(print()).andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void createServicesCard_givenInvalidBirthDate_shouldReturn400() throws Exception {
+    final ServicesCardEntity servicesCard = this.getServicesCardEntity();
+    val savedEntity = this.service.createServicesCard(servicesCard);
+    assertNotNull(savedEntity);
+    assertNotNull(savedEntity.getServicesCardInfoID());
+    val payload = ServicesCardMapper.mapper.toStructure(savedEntity);
+    payload.setCreateDate(null);
+    payload.setCreateUser(null);
+    payload.setUpdateDate(null);
+    payload.setDid("1236456");
+    this.mockMvc
+      .perform(post(BASE_URL)
+        .with(jwt().jwt((jwt) -> jwt.claim("scope", "WRITE_SERVICES_CARD")))
+        .contentType(APPLICATION_JSON).accept(APPLICATION_JSON).content(JsonUtil.getJsonStringFromObject(payload)))
+      .andDo(print()).andExpect(status().isBadRequest());
+  }
+
+  @Test
   public void updateServicesCard() throws Exception {
     final ServicesCardEntity servicesCard = this.getServicesCardEntity();
     val savedEntity = this.service.createServicesCard(servicesCard);
