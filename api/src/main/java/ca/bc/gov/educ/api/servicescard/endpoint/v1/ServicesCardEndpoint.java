@@ -42,7 +42,7 @@ public interface ServicesCardEndpoint {
   ServicesCard updateServicesCard(@Validated @RequestBody ServicesCard servicesCard, @PathVariable UUID servicesCardInfoID);
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('DELETE_SERVICES_CARD')")
+  @PreAuthorize("hasAuthority('SCOPE_DELETE_SERVICES_CARD')")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "NO CONTENT"), @ApiResponse(responseCode = "404", description = "NOT FOUND."), @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR.")})
   ResponseEntity<Void> deleteById(@PathVariable UUID id);
 }
