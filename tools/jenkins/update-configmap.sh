@@ -27,7 +27,9 @@ TKN=$(curl -X POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/protocol/openid-co
  -d "username=$SOAM_KC_LOAD_USER_ADMIN" \
  -d "password=$SOAM_KC_LOAD_USER_PASS" \
  -d 'grant_type=password' \
- -d 'client_id=admin-cli' | jq -r '.access_token')
+ -d 'client_id=admin-cli')
+
+#curl  --data "grant_type=client_credentials&client_id=synchronization_tool&client_secret=8f6a6e73-66ca-4f8f-1234-ab909147f1cf" http://localhost:8080/auth/realms/master/protocol/openid-connect/token
 
 echo Token: "$TKN"
 
