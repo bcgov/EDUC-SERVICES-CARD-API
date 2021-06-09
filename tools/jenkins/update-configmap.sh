@@ -29,6 +29,8 @@ TKN=$(curl -X POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/protocol/openid-co
  -d 'grant_type=password' \
  -d 'client_id=admin-cli' | jq -r '.access_token')
 
+echo Token: "$TKN"
+
 
 #$KCADM_FILE_BIN_FOLDER/kcadm.sh config credentials --server https://$SOAM_KC/auth --realm $SOAM_KC_REALM_ID --user "$SOAM_KC_LOAD_USER_ADMIN" --password "$SOAM_KC_LOAD_USER_PASS"
 #getPublicKey(){
