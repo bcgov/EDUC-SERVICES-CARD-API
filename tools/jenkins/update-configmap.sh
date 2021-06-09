@@ -21,22 +21,35 @@ NATS_URL="nats://nats.${OPENSHIFT_NAMESPACE}-${envValue}.svc.cluster.local:4222"
 
 oc project "$OPENSHIFT_NAMESPACE"-tools
 
-###########################################################
-#Fetch the public key
-###########################################################
-$KCADM_FILE_BIN_FOLDER/kcadm.sh config credentials --server https://$SOAM_KC/auth --realm $SOAM_KC_REALM_ID --user "$SOAM_KC_LOAD_USER_ADMIN" --password "$SOAM_KC_LOAD_USER_PASS"
-getPublicKey(){
-    # shellcheck disable=SC1007
-    executorID= $KCADM_FILE_BIN_FOLDER/kcadm.sh get keys -r $SOAM_KC_REALM_ID | grep -Po 'publicKey" : "\K([^"]*)'
-}
+echo Fetching SOAM token
+TKN=$(curl -X POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token" \
+ -H "Content-Type: application/x-www-form-urlencoded" \
+ -d "username=$SOAM_KC_LOAD_USER_ADMIN" \
+ -d "password=$SOAM_KC_LOAD_USER_PASS" \
+ -d 'grant_type=password' \
+ -d 'client_id=admin-cli' | jq -r '.access_token')
 
-echo Fetching public key from SOAM
-soamFullPublicKey="-----BEGIN PUBLIC KEY----- $(getPublicKey) -----END PUBLIC KEY-----"
+
+#$KCADM_FILE_BIN_FOLDER/kcadm.sh config credentials --server https://$SOAM_KC/auth --realm $SOAM_KC_REALM_ID --user "$SOAM_KC_LOAD_USER_ADMIN" --password "$SOAM_KC_LOAD_USER_PASS"
+#getPublicKey(){
+#    # shellcheck disable=SC1007
+#    executorID= $KCADM_FILE_BIN_FOLDER/kcadm.sh get keys -r $SOAM_KC_REALM_ID | grep -Po 'publicKey" : "\K([^"]*)'
+#}
+
+#echo Fetching public key from SOAM
+#soamFullPublicKey="-----BEGIN PUBLIC KEY----- $(getPublicKey) -----END PUBLIC KEY-----"
 
 #READ_SERVICES_CARD
-$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+
+echo Writing scopes
+curl -X POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/client-scopes" \
+ -H "Content-Type: application/json" \
+ -H "Authorization: Bearer $TKN" \
+ --data '{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}'
+
+#$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 #WRITE_SERVICES_CARD
-$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+#$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 ###########################################################
 #Setup for config-map
