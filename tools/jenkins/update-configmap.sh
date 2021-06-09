@@ -29,12 +29,6 @@ TKN=$(curl \
   -d "grant_type=password" \
   "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token" | jq -r '.access_token')
 
-#curl  --data "grant_type=client_credentials&client_id=synchronization_tool&client_secret=8f6a6e73-66ca-4f8f-1234-ab909147f1cf" http://localhost:8080/auth/realms/master/protocol/openid-connect/token
-
-echo Token looks like the following: "$TKN"
-
-
-#$KCADM_FILE_BIN_FOLDER/kcadm.sh config credentials --server https://$SOAM_KC/auth --realm $SOAM_KC_REALM_ID --user "$SOAM_KC_LOAD_USER_ADMIN" --password "$SOAM_KC_LOAD_USER_PASS"
 #getPublicKey(){
 #    # shellcheck disable=SC1007
 #    executorID= $KCADM_FILE_BIN_FOLDER/kcadm.sh get keys -r $SOAM_KC_REALM_ID | grep -Po 'publicKey" : "\K([^"]*)'
@@ -45,15 +39,20 @@ echo Token looks like the following: "$TKN"
 
 #READ_SERVICES_CARD
 
-echo Writing scopes
-curl -X POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/client-scopes" \
+echo Writing scope READ_SERVICES_CARD
+curl -X POST "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/client-scopes" \
  -H "Content-Type: application/json" \
  -H "Authorization: Bearer $TKN" \
- --data '{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}'
+ -d "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 #$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
-#WRITE_SERVICES_CARD
-$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+
+echo Writing scope WRITE_SERVICES_CARD
+curl -X POST "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/client-scopes" \
+ -H "Content-Type: application/json" \
+ -H "Authorization: Bearer $TKN" \
+ -d "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+#$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 ###########################################################
 #Setup for config-map
