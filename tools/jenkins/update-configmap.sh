@@ -22,12 +22,12 @@ NATS_URL="nats://nats.${OPENSHIFT_NAMESPACE}-${envValue}.svc.cluster.local:4222"
 oc project "$OPENSHIFT_NAMESPACE"-tools
 
 echo Fetching SOAM token from "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token"
-TKN=$(curl -X POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token" \
- -H "Content-Type: application/x-www-form-urlencoded" \
- -d "username=$SOAM_KC_LOAD_USER_ADMIN" \
- -d "password=$SOAM_KC_LOAD_USER_PASS" \
- -d 'grant_type=password' \
- -d 'client_id=admin-cli')
+TKN=curl \
+  -d "client_id=admin-cli" \
+  -d "username=$SOAM_KC_LOAD_USER_ADMIN" \
+  -d "password=$SOAM_KC_LOAD_USER_PASS" \
+  -d "grant_type=password" \
+  "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token" | jq -r '.access_token')
 
 #curl  --data "grant_type=client_credentials&client_id=synchronization_tool&client_secret=8f6a6e73-66ca-4f8f-1234-ab909147f1cf" http://localhost:8080/auth/realms/master/protocol/openid-connect/token
 
@@ -53,7 +53,7 @@ curl -X POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/client-scopes" \
 
 #$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 #WRITE_SERVICES_CARD
-#$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 ###########################################################
 #Setup for config-map
