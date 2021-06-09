@@ -22,7 +22,7 @@ NATS_URL="nats://nats.${OPENSHIFT_NAMESPACE}-${envValue}.svc.cluster.local:4222"
 oc project "$OPENSHIFT_NAMESPACE"-tools
 
 echo Fetching SOAM token
-TKN=$(curl -X POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token" \
+TKN=$(curl -vX POST "https://$SOAM_KC/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token" \
  -H "Content-Type: application/x-www-form-urlencoded" \
  -d "username=$SOAM_KC_LOAD_USER_ADMIN" \
  -d "password=$SOAM_KC_LOAD_USER_PASS" \
