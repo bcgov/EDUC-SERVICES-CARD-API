@@ -16,7 +16,7 @@ SOAM_KC=soam-$envValue.apps.silver.devops.gov.bc.ca
 NATS_CLUSTER=educ_nats_cluster
 NATS_URL="nats://nats.${OPENSHIFT_NAMESPACE}-${envValue}.svc.cluster.local:4222"
 
-echo Fetching SOAM token from "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/protocol/openid-connect/token"
+echo Fetching SOAM token
 TKN=$(curl -s \
   -d "client_id=admin-cli" \
   -d "username=$SOAM_KC_LOAD_USER_ADMIN" \
