@@ -31,7 +31,7 @@ TKN=curl \
 
 #curl  --data "grant_type=client_credentials&client_id=synchronization_tool&client_secret=8f6a6e73-66ca-4f8f-1234-ab909147f1cf" http://localhost:8080/auth/realms/master/protocol/openid-connect/token
 
-echo Token: "$TKN"
+echo Token is: "$TKN"
 
 
 #$KCADM_FILE_BIN_FOLDER/kcadm.sh config credentials --server https://$SOAM_KC/auth --realm $SOAM_KC_REALM_ID --user "$SOAM_KC_LOAD_USER_ADMIN" --password "$SOAM_KC_LOAD_USER_PASS"
