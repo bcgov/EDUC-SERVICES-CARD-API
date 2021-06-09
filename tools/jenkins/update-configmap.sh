@@ -40,7 +40,7 @@ TKN=$(curl \
 #READ_SERVICES_CARD
 
 echo Writing scope READ_SERVICES_CARD
-curl -X POST "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/client-scopes" \
+curl -X POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scopes" \
  -H "Content-Type: application/json" \
  -H "Authorization: Bearer $TKN" \
  -d "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
@@ -48,7 +48,7 @@ curl -X POST "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/client-scopes" \
 #$KCADM_FILE_BIN_FOLDER/kcadm.sh create client-scopes -r $SOAM_KC_REALM_ID --body "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 echo Writing scope WRITE_SERVICES_CARD
-curl -X POST "https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID/client-scopes" \
+curl -X POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scopes" \
  -H "Content-Type: application/json" \
  -H "Authorization: Bearer $TKN" \
  -d "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
