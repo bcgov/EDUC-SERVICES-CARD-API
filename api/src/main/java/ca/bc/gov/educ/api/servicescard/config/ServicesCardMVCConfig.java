@@ -10,16 +10,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ServicesCardMVCConfig implements WebMvcConfigurer {
 
-    @Getter(AccessLevel.PRIVATE)
-    private final ServicesCardRequestInterceptor servicesCardRequestInterceptor;
+  @Getter(AccessLevel.PRIVATE)
+  private final RequestResponseInterceptor requestResponseInterceptor;
 
-    @Autowired
-    public ServicesCardMVCConfig(final ServicesCardRequestInterceptor servicesCardRequestInterceptor){
-        this.servicesCardRequestInterceptor = servicesCardRequestInterceptor;
-    }
+  @Autowired
+  public ServicesCardMVCConfig(final RequestResponseInterceptor requestResponseInterceptor) {
+    this.requestResponseInterceptor = requestResponseInterceptor;
+  }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(servicesCardRequestInterceptor).addPathPatterns("/**");
-    }
+  @Override
+  public void addInterceptors(final InterceptorRegistry registry) {
+    registry.addInterceptor(this.requestResponseInterceptor).addPathPatterns("/**");
+  }
 }
