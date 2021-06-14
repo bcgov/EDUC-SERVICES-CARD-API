@@ -1,5 +1,6 @@
 package ca.bc.gov.educ.api.servicescard.messaging;
 
+import ca.bc.gov.educ.api.servicescard.helpers.LogHelper;
 import ca.bc.gov.educ.api.servicescard.service.v1.EventHandlerDelegatorService;
 import ca.bc.gov.educ.api.servicescard.struct.Event;
 import ca.bc.gov.educ.api.servicescard.utils.JsonUtil;
@@ -51,6 +52,7 @@ public class MessageSubscriber {
         log.info("Message received is :: {} ", message);
         try {
           val eventString = new String(message.getData());
+          LogHelper.logMessagingEventDetails(eventString);
           val event = JsonUtil.getJsonObjectFromString(Event.class, eventString);
           this.eventHandlerDelegatorService.handleEvent(message, event);
           log.debug("Event is :: {}", event);

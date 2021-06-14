@@ -27,16 +27,16 @@ TKN=$(curl -s \
 echo
 echo Writing scope READ_SERVICES_CARD
 curl -sX POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scopes" \
- -H "Content-Type: application/json" \
- -H "Authorization: Bearer $TKN" \
- -d "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TKN" \
+  -d "{\"description\": \"SOAM send email scope\",\"id\": \"READ_SERVICES_CARD\",\"name\": \"READ_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 echo
 echo Writing scope WRITE_SERVICES_CARD
 curl -sX POST "https://$SOAM_KC/auth/admin/realms/$SOAM_KC_REALM_ID/client-scopes" \
- -H "Content-Type: application/json" \
- -H "Authorization: Bearer $TKN" \
- -d "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TKN" \
+  -d "{\"description\": \"SOAM send email scope\",\"id\": \"WRITE_SERVICES_CARD\",\"name\": \"WRITE_SERVICES_CARD\",\"protocol\": \"openid-connect\",\"attributes\" : {\"include.in.token.scope\" : \"true\",\"display.on.consent.screen\" : \"false\"}}"
 
 ###########################################################
 #Setup for config-map
@@ -48,10 +48,11 @@ FLB_CONFIG="[SERVICE]
    Log_Level    debug
    HTTP_Server   On
    HTTP_Listen   0.0.0.0
-   HTTP_Port     2020
+   Parsers_File parsers.conf
 [INPUT]
    Name   tail
    Path   /mnt/log/*
+   Parser docker
    Mem_Buf_Limit 20MB
 [FILTER]
    Name record_modifier
@@ -70,6 +71,11 @@ FLB_CONFIG="[SERVICE]
    Message_Key $APP_NAME
    Splunk_Token $SPLUNK_TOKEN
 "
+PARSER_CONFIG="
+[PARSER]
+    Name        docker
+    Format      json
+"
 
 echo
 echo Creating config map "$APP_NAME"-config-map
@@ -79,7 +85,7 @@ echo Setting environment variables for "$APP_NAME"-$SOAM_KC_REALM_ID application
 oc set env -n "$OPENSHIFT_NAMESPACE"-"$envValue" --from=configmap/"$APP_NAME"-config-map dc/"$APP_NAME"-$SOAM_KC_REALM_ID
 
 echo Creating config map "$APP_NAME"-flb-sc-config-map
-oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-flb-sc-config-map --from-literal=fluent-bit.conf="$FLB_CONFIG"  --dry-run -o yaml | oc apply -f -
+oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-flb-sc-config-map --from-literal=fluent-bit.conf="$FLB_CONFIG" --from-literal=parsers.conf="$PARSER_CONFIG" --dry-run -o yaml | oc apply -f -
 
 echo Removing un-needed config entries
-oc -n "$OPENSHIFT_NAMESPACE"-"$envValue" set env dc/"$APP_NAME"-$SOAM_KC_REALM_ID KEYCLOAK_PUBLIC_KEY-
+oc set env dc/"$APP_NAME"-$SOAM_KC_REALM_ID KEYCLOAK_PUBLIC_KEY-
