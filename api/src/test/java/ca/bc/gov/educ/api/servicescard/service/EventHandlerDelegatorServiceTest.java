@@ -136,7 +136,6 @@ public class EventHandlerDelegatorServiceTest {
     final ServicesCardEntity servicesCard = this.getServicesCardEntity();
     this.servicesCardRepository.save(servicesCard);
     final ServicesCard servicesCardStruct = ServicesCardMapper.mapper.toStructure(servicesCard);
-    servicesCardStruct.setCity("VICTORIA");
     final Event getEvent = this.createDummyUpdateServiceCardEvent(JsonUtil.getJsonStringFromObject(servicesCardStruct));
     this.eventHandlerDelegatorService.handleEvent(NatsMessageImpl.builder().build(), getEvent);
 
@@ -172,8 +171,6 @@ public class EventHandlerDelegatorServiceTest {
     final ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
     servicesCardEntity.setDigitalIdentityID(UUID.randomUUID());
     servicesCardEntity.setBirthDate(LocalDate.parse("1979-06-11"));
-    servicesCardEntity.setCity("Compton");
-    servicesCardEntity.setCountry("Canada");
     servicesCardEntity.setDid(did);
     servicesCardEntity.setEmail("this@sometest.com");
     servicesCardEntity.setGender("Male");
@@ -182,8 +179,6 @@ public class EventHandlerDelegatorServiceTest {
     servicesCardEntity.setGivenNames("John");
     servicesCardEntity.setSurname("Delanis");
     servicesCardEntity.setPostalCode("V0E1W3");
-    servicesCardEntity.setProvince("British Columbia");
-    servicesCardEntity.setStreetAddress("123 SomeAddress");
     servicesCardEntity.setUserDisplayName("Mike Delanis");
     return servicesCardEntity;
   }

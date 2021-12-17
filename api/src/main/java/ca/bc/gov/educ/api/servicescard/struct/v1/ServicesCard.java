@@ -28,28 +28,20 @@ public class ServicesCard implements Serializable {
   @Size(max = 255)
   String givenNames;
   @Size(max = 255)
+  @NotNull(message = "Surname cannot be null")
   String surname;
   @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Date of Birth must be in 'yyyy-mm-dd' format")
+  @NotNull(message = "Birth date cannot be null")
   String birthDate;
   @Size(max = 7)
+  @NotNull(message = "Gender cannot be null")
   String gender;
   @Size(max = 1)
+  @NotNull(message = "Identity assurance level cannot be null")
   String identityAssuranceLevel;
   @Size(max = 255)
   @Email(message = "Email must be valid email address")
   String email;
-  @Size(max = 1000)
-  @NotNull(message = "Street address cannot be null")
-  String streetAddress;
-  @Size(max = 255)
-  @NotNull(message = "City cannot be null")
-  String city;
-  @Size(max = 255)
-  @NotNull(message = "Province cannot be null")
-  String province;
-  @Size(max = 255)
-  @NotNull(message = "Country cannot be null")
-  String country;
   @Size(max = 7)
   @NotNull(message = "Postal code cannot be null")
   String postalCode;

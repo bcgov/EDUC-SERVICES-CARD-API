@@ -63,18 +63,6 @@ public class ServicesCardEntity {
   @Column(name = "EMAIL")
   String email;
 
-  @Column(name = "STREET_ADDRESS")
-  String streetAddress;
-
-  @Column(name = "CITY")
-  String city;
-
-  @Column(name = "PROVINCE")
-  String province;
-
-  @Column(name = "COUNTRY")
-  String country;
-
   @Column(name = "POSTAL_CODE")
   String postalCode;
 

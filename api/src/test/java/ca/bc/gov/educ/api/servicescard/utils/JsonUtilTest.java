@@ -10,28 +10,24 @@ public class JsonUtilTest {
   @Test
   public void getJsonStringFromObject() {
     ServicesCard servicesCard = new ServicesCard();
-    servicesCard.setCity("test");
     assertThat(JsonUtil.getJsonStringFromObject(servicesCard)).isNotEmpty();
   }
 
   @Test
   public void getJsonObjectFromString() {
     ServicesCard servicesCard = new ServicesCard();
-    servicesCard.setCity("test");
     assertThat(JsonUtil.getJsonObjectFromString(ServicesCard.class, JsonUtil.getJsonStringFromObject(servicesCard))).isNotNull();
   }
 
   @Test
   public void getJsonBytesFromObject() {
     ServicesCard servicesCard = new ServicesCard();
-    servicesCard.setCity("test");
     assertThat(JsonUtil.getJsonBytesFromObject(servicesCard)).isNotEmpty();
   }
 
   @Test
   public void getJsonBytesFromObjectThrowJsonProcessingException() {
     ServicesCard servicesCard = new ServicesCard();
-    servicesCard.setCity("test");
     assertThat(JsonUtil.getJsonBytesFromObject(servicesCard)).isNotEmpty();
   }
 }

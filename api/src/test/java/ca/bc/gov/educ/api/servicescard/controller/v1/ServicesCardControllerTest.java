@@ -197,8 +197,6 @@ public class ServicesCardControllerTest {
     final ServicesCardEntity servicesCardEntity = new ServicesCardEntity();
     servicesCardEntity.setDigitalIdentityID(UUID.randomUUID());
     servicesCardEntity.setBirthDate(LocalDate.parse("1979-06-11"));
-    servicesCardEntity.setCity("Compton");
-    servicesCardEntity.setCountry("Canada");
     servicesCardEntity.setDid("1234123112321231");
     servicesCardEntity.setEmail("this@sometest.com");
     servicesCardEntity.setGender("Male");
@@ -207,8 +205,6 @@ public class ServicesCardControllerTest {
     servicesCardEntity.setGivenNames("John");
     servicesCardEntity.setSurname("Delanis");
     servicesCardEntity.setPostalCode("V0E1W3");
-    servicesCardEntity.setProvince("British Columbia");
-    servicesCardEntity.setStreetAddress("123 SomeAddress");
     servicesCardEntity.setUserDisplayName("Mike Delanis");
     return servicesCardEntity;
   }
