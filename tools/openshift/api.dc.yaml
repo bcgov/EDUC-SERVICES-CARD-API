@@ -166,9 +166,6 @@ parameters:
 - name: APP_NAME
   description: Application name
   required: true
-- name: HOST_ROUTE
-  description: The host the route will use to expose service outside cluster
-  required: true
 - name: CONTAINER_PORT
   description: The port on which the application will be accessible
   value: "8080"
