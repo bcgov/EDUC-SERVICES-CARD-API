@@ -4,11 +4,13 @@ import ca.bc.gov.educ.api.servicescard.exception.EntityNotFoundException;
 import ca.bc.gov.educ.api.servicescard.model.v1.ServicesCardEntity;
 import ca.bc.gov.educ.api.servicescard.repository.ServicesCardRepository;
 import ca.bc.gov.educ.api.servicescard.service.v1.ServicesCardService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -19,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@ActiveProfiles("test")
+@SpringBootTest
 public class ServicesCardServiceTest {
 
   @Autowired
@@ -29,6 +32,11 @@ public class ServicesCardServiceTest {
   @Before
   public void before() {
     this.service = new ServicesCardService(this.repository);
+  }
+
+  @After
+  public void after() {
+    this.repository.deleteAll();
   }
 
   @Test
