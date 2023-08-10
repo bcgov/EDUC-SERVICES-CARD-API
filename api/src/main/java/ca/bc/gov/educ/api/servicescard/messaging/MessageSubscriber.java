@@ -12,7 +12,7 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import static ca.bc.gov.educ.api.servicescard.constants.Topics.SERVICES_CARD_API_TOPIC;
 
