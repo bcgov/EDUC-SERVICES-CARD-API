@@ -53,7 +53,7 @@ jobs:
 
   deploy-test:
     name: Deploy to OpenShift TEST
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     environment: test
 
     outputs:
@@ -100,7 +100,7 @@ jobs:
             }
 
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
@@ -133,6 +133,6 @@ jobs:
           oc rollout status dc/${{ env.SPRING_BOOT_IMAGE_NAME }}
 
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.2.0
+        uses: zaproxy/action-api-scan@v0.8.0
         with:
           target: 'https://${{ env.APP_NAME }}-${{ env.OPENSHIFT_NAMESPACE_TEST }}.apps.silver.devops.gov.bc.ca/v3/api-docs'
