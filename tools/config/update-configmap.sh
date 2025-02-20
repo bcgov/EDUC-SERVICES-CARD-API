@@ -1,11 +1,11 @@
 envValue=$1
 APP_NAME=$2
 OPENSHIFT_NAMESPACE=$3
-COMMON_NAMESPACE=$4
-DB_JDBC_CONNECT_STRING=$5
-DB_PWD=$6
-DB_USER=$7
-SPLUNK_TOKEN=$8
+DB_JDBC_CONNECT_STRING=$4
+DB_PWD=$5
+DB_USER=$6
+SPLUNK_TOKEN=$7
+BRANCH=$8
 
 TZVALUE="America/Vancouver"
 SOAM_KC_REALM_ID="master"
@@ -80,14 +80,35 @@ PARSER_CONFIG="
 "
 
 echo
-echo Creating config map "$APP_NAME"-config-map
-oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-config-map --from-literal=TZ=$TZVALUE --from-literal=TOKEN_ISSUER_URL="https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID" --from-literal=NATS_URL="$NATS_URL" --from-literal=NATS_CLUSTER=$NATS_CLUSTER --from-literal=JDBC_URL="$DB_JDBC_CONNECT_STRING" --from-literal=ORACLE_USERNAME="$DB_USER" --from-literal=ORACLE_PASSWORD="$DB_PWD" --from-literal=SPRING_SECURITY_LOG_LEVEL=INFO --from-literal=SPRING_WEB_LOG_LEVEL=INFO --from-literal=APP_LOG_LEVEL=INFO --from-literal=SPRING_BOOT_AUTOCONFIG_LOG_LEVEL=INFO --from-literal=SPRING_SHOW_REQUEST_DETAILS=false --from-literal=NATS_MAX_RECONNECT=60 --dry-run -o yaml | oc apply -f -
+echo Creating config map "$APP_NAME-config-map"
+oc create -n "$OPENSHIFT_NAMESPACE-$envValue" configmap "$APP_NAME-config-map" \
+  --from-literal=TZ=$TZVALUE \
+  --from-literal=TOKEN_ISSUER_URL="https://$SOAM_KC/auth/realms/$SOAM_KC_REALM_ID" \
+  --from-literal=NATS_URL="$NATS_URL" \
+  --from-literal=NATS_CLUSTER=$NATS_CLUSTER \
+  --from-literal=JDBC_URL="$DB_JDBC_CONNECT_STRING" \
+  --from-literal=ORACLE_USERNAME="$DB_USER" \
+  --from-literal=ORACLE_PASSWORD="$DB_PWD" \
+  --from-literal=SPRING_SECURITY_LOG_LEVEL=INFO \
+  --from-literal=SPRING_WEB_LOG_LEVEL=INFO \
+  --from-literal=APP_LOG_LEVEL=INFO \
+  --from-literal=SPRING_BOOT_AUTOCONFIG_LOG_LEVEL=INFO \
+  --from-literal=SPRING_SHOW_REQUEST_DETAILS=false \
+  --from-literal=NATS_MAX_RECONNECT=60 \
+  --dry-run -o yaml | oc apply -f -
 echo
-echo Setting environment variables for "$APP_NAME"-$SOAM_KC_REALM_ID application
-oc set env -n "$OPENSHIFT_NAMESPACE"-"$envValue" --from=configmap/"$APP_NAME"-config-map dc/"$APP_NAME"-$SOAM_KC_REALM_ID
 
-echo Creating config map "$APP_NAME"-flb-sc-config-map
-oc create -n "$OPENSHIFT_NAMESPACE"-"$envValue" configmap "$APP_NAME"-flb-sc-config-map --from-literal=fluent-bit.conf="$FLB_CONFIG" --from-literal=parsers.conf="$PARSER_CONFIG" --dry-run -o yaml | oc apply -f -
+echo Setting environment variables for "$APP_NAME-$BRANCH" application
+oc set env -n "$OPENSHIFT_NAMESPACE-$envValue" \
+  --from="configmap/$APP_NAME-config-map" "deployment/$APP_NAME-$BRANCH"
+
+echo Creating config map "$APP_NAME-flb-sc-config-map"
+oc create -n "$OPENSHIFT_NAMESPACE-$envValue" configmap \
+  "$APP_NAME-flb-sc-config-map" \
+  --from-literal="fluent-bit.conf=$FLB_CONFIG" \
+  --from-literal="parsers.conf=$PARSER_CONFIG" \
+  --dry-run -o yaml | oc apply -f -
 
 echo Removing un-needed config entries
-oc -n "$OPENSHIFT_NAMESPACE"-"$envValue" set env dc/"$APP_NAME"-$SOAM_KC_REALM_ID KEYCLOAK_PUBLIC_KEY-
+oc -n "$OPENSHIFT_NAMESPACE-$envValue" set env \
+  "deployment/$APP_NAME-$BRANCH" KEYCLOAK_PUBLIC_KEY-
